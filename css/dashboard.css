@@ -1,0 +1,195 @@
+
+.main{
+    margin-top: 20px;
+    position: absolute;
+    float: left;
+    width: 100%;
+}
+.task{
+    display: block;
+    position: absolute;
+    margin-left: 185px;
+    margin-top: 45px;
+    width: 461px;
+    height: auto;
+}
+.task h1{
+    margin-bottom: 15px;
+    color: #b5b5b5;
+    font: 700 19.15px Lato;
+}
+.task button{
+    background-color: #e74c3c;
+    position: absolute;
+    height: 24px;
+    width: 69px;
+    margin-left: 21px;
+    border: none;
+    border-bottom: 4px solid #cb4537;
+    color: #ffffff;
+    font: 400 11px Roboto;
+}
+.task-table img{
+    margin-right: 9px;
+}
+.task-table{
+    color: #a7a6a6;
+    font: 400 11px Lato;
+    padding-top: 10px !important;
+}
+.task-table > tbody > tr > .subject {
+    width: 60%;
+}
+
+/*
+.task-table > tbody > tr > .action {
+    padding-left: 0px !important;
+}
+*/
+.task-table td{
+    padding-top: 15px !important;
+}
+.task-table th{
+    color: #ffffff;
+    font: 700 11px Lato;
+}
+
+.task-table input[type=checkbox] {
+	visibility: hidden;
+}
+.task-table label {
+	cursor: pointer;
+    margin-top: -15px;
+	width: 11.5px;
+	height: 11.5px;
+	top: 0;
+  	left: 0;
+	background: #fff;
+	border:1px solid #a7a6a6;
+}
+.task-table label:after {
+	opacity: 0;
+	content: '';
+	width: 9px;
+	height: 5px;
+    position: absolute;
+	background: transparent;
+	border: 2px solid #fff;
+	border-top: none;
+	border-right: none;
+
+	-webkit-transform: rotate(-45deg);
+	-moz-transform: rotate(-45deg);
+	-o-transform: rotate(-45deg);
+	-ms-transform: rotate(-45deg);
+	transform: rotate(-45deg);
+}
+.task-table label:hover::after {
+	opacity: 0.5;
+}
+
+/**
+ * Create the checkbox state for the tick
+ */
+.task-table input[type=checkbox]:checked + label:after {
+	opacity: 1;
+}
+.task-table input[type=checkbox]:checked + label {
+    background:#232c34;
+}
+.panel {
+    border: none;
+}
+.panel-heading {
+    background-color: #232c34;
+    color: #ffffff;
+    font: 700 13px Lato;
+}
+.panel-heading {
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+}
+.no-padding{
+    padding: 0;
+}
+.event{
+    position: absolute;
+    float: left;
+    height: auto;
+    margin-left: 670px;
+}
+.event h1{
+    margin-bottom: 15px;
+    color: #b5b5b5;
+    font: 700 19.15px Lato;
+}
+.event > div > h1 > button{
+    background-color: #e74c3c;
+    height: 24px;
+    margin-left: 21px;
+    position: relative;
+    margin-top: 45px;
+    border: none;
+    border-bottom: 2px solid #cb4537;
+    color: #ffffff;
+    font: 400 11px Roboto;
+}
+.event > .calendar {
+    background: url(images/calendar.png);
+    width: 635px;
+    height: 188px;
+    margin-bottom: 20px;
+}
+
+.event-table img{
+    margin-right: 9px;
+}
+.event-table{
+    color: #a7a6a6;
+    font: 400 11px Lato;
+    width:633px;
+}
+.event-table > tbody > tr > .subject {
+    width: 70%;
+    padding-left: 15px !important;
+}
+
+
+.event-table > tbody > tr > .action {
+    padding-left: 66px !important;
+}
+
+.event-table td{
+    padding-top: 10px !important;
+}
+.event-table th{
+    color: #ffffff;
+    font: 700 11px Lato;
+}
+.dashboard{
+    position: relative;
+    margin-left: 183px;
+    margin-top: 700px;
+    width: 1000px;
+    height: auto;
+}
+.dark-header{
+  color: #333;
+  background-color: #232c34;
+  border-color: #ddd;
+}
+.red-header{
+  color: #333;
+  background-color: #e74c3c;
+  border-color: #ddd;
+}
+.chart{
+    width: 347px;
+    height: 35px;
+    display: block;
+    margin-left: 25px;
+    float: left;
+    position: relative;
+}
+
+    

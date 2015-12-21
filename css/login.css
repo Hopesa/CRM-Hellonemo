@@ -1,0 +1,87 @@
+.slogan{
+    position: absolute;
+    margin-top: 150px;
+    margin-left: 135px;
+}
+.slogan-1{
+    color: #ffffff;
+    font: 300 48px Roboto;
+}
+.slogan-2{
+    margin-top:-50px;
+    color: #ffffff;
+    font: 500 48px Roboto;
+}
+    
+
+.login-box{
+    position: absolute;
+    float: left;
+    margin-left: 67%;
+    margin-right: 20%;
+    margin-top: 65px;
+}
+.login-hn{
+    width: 79px;
+    height: 84px;
+    margin-left: 129px;
+    margin-bottom: 5px;
+}
+.login-black-box{
+    display: block;
+    box-shadow: 3px 6px 9.1px 0.90px rgba(0, 0, 0, 0.35);
+    height: 368px;
+    width: 337px;
+    background-color: #232c34;
+}
+.login-header{   
+    margin-top:37px;
+    position: absolute;
+    height: 47px;
+}
+.yellow-box{
+    background-color:#f9d238;
+    height: 47px;
+    width: 17px;
+    
+}
+.login-title{
+    float: left;
+    margin-top: -90px;
+    margin-left: 18px;
+}
+.login-title h1{
+    float: left;
+    color: #ffffff;
+    font-family: Roboto;
+    font-size: 48px;
+    font-weight: 300;
+    transform: scale(0.737,0.74);
+}
+.login-form{
+    position: absolute;
+    height: auto;
+    margin-left: 34px;
+    margin-top: 100px;
+}
+.login-form input{
+    background-color: #41515f;
+    padding-left: 12px;
+    width: 272px;
+    height: 36px;
+    color: #ffffff;
+    font: 300 14px Roboto;
+    border: none;
+    margin-top: 36px;
+}
+.login-form button{
+    background-color: #f9d238;
+    width: 272px;
+    height: 38px;
+    color: #ffffff;
+    font: 300 16px Roboto;
+    border: none;
+    margin-top: 40px;
+    border-bottom: 4px solid #e3b911;
+    
+}

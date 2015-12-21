@@ -1,0 +1,123 @@
+html, body {
+    margin: 0;
+    padding: 0;
+}
+h1{
+    margin-bottom: 15px;
+    color: #b5b5b5;
+    font: 700 19.15px Lato;
+}
+a{text-decoration: none;
+}
+a:hover{
+    text-decoration: none;
+}
+.topbar{
+    position: absolute;
+    background-color: #ffffff;
+    height: 45px;
+    width: 100%;   
+    z-index: 5;
+}
+.sidebar{
+    z-index: 1;
+    display: block;
+    position: absolute;
+    background-color: #232c34;
+    width: 161px;
+    height: auto;
+}
+.logo{
+    position: absolute;
+    height: 26px;
+    width: 25px;
+    margin-left: 15px;
+    margin-top: 12px;
+}
+.search {
+    float: left;
+    margin-left: 71.5%;
+    margin-top: 12px;
+} 
+.search form input{
+    background-color: #f4f4f4;
+    width: 179px;
+    height: 24px;
+    border: none;
+    border-radius: 10px;
+    color: #aeaeae;
+    font: 100 12px Roboto;
+    padding-left: 16px;
+}
+.search img {
+    position: absolute;
+    margin-left: 154px;
+    margin-top: -34px;
+    height: 14px;
+    width: 14px;
+}
+.notif{
+    margin-top: 6px;
+    margin-left: 1%;
+}
+.notif img{
+    margin-left: 30px;
+}
+    
+.pic img{
+    width: 161px;
+    height: 159px;
+}
+.pic p{
+    color: #ffffff;
+    font: 300 16px Roboto;
+}
+.pic button{
+    background-color: #e74c3c;
+    height: 21px;
+    width: 62px;
+    border: none;
+    border-bottom: 4px solid #cb4537;
+    color: #ffffff;
+    color: #ffffff;
+    font: 100 12px Roboto;
+}
+.sidebar-menu {
+    list-style: none;
+    text-decoration: none;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 170px;
+}
+.sidebar-menu a{
+    text-decoration: none;
+    color: #ffffff;
+    font: 100 12px Roboto;
+}
+.sidebar .sidebar-menu {
+  list-style: none;
+  margin-top: 18px;
+  padding: 0;
+}
+.sidebar .sidebar-menu > li {
+  margin: 0;
+  padding: 0;
+  height: 53px;
+}
+.sidebar .sidebar-menu > li > a {
+  padding: 18px 5px 20px 15px;
+  display: block;
+}
+.sidebar > .sidebar-menu > li > a:hover,
+.sidebar > .sidebar-menu > li.active > a {
+  color: #f6f6f6;
+  background-color: #36434f;
+}
+.sidebar-menu img{
+    height: 17px;
+    width: 20px;
+    margin-right: 16px; 
+}
+.clickable-row{
+    cursor: pointer;
+}

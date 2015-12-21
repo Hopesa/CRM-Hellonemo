@@ -1,0 +1,92 @@
+.contact-account{
+    display: block;
+    position: absolute;
+    margin-left: 185px;
+    margin-top: 45px;
+    width:1106px;
+    height: auto;
+}
+.contact-account table{
+    margin:0;
+}
+.contact-account h1{
+    margin-bottom: 15px;
+    color: #b5b5b5;
+    font: 700 19.15px Lato;
+}
+.contact-account button{
+    background-color: #e74c3c;
+    height: 24px;
+    margin-left: 23px;
+    border: none;
+    padding: 0px 10px 0px 10px;
+    border-bottom: 2px solid #cb4537;
+    color: #ffffff;
+    font: 400 11px Roboto;
+}
+.contact-account > .top {
+    position: absolute;
+    margin-left: 780px;
+    margin-top: -41px;
+}
+.contact-table img{
+    margin-right: 9px;
+}
+.contact-table{
+    color: #a7a6a6;
+    font: 400 11px Lato;
+    padding-top: 10px !important;
+}
+
+.contact-table td{
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+}
+.contact-table tr:hover{
+    background-color: #fcfcfc;
+}
+.contact-table th{
+    color: #ffffff;
+    font: 700 11px Lato;
+}
+.panel {
+    border: none;
+}
+.panel-heading {
+    background-color: #232c34;
+    color: #ffffff;
+    font: 700 13px Lato;
+}
+.panel-heading:hover{
+     background-color: #232c34 !important;
+}
+.panel-heading {
+    border-top-right-radius: 3px;
+    border-top-left-radius: 3px;
+}
+.tools{
+    background-color: #ffffff;
+    height: 159px;
+    margin-left: 170px;
+    margin-top: 600px;
+    position: absolute;
+}
+.reports{
+    background-color: #ffffff;
+    height: 159px;
+    margin-left: 50%;
+    margin-top: 600px;
+    width: 600px;
+    position: absolute;
+}
+.no-padding{
+    padding: 0;
+}
+.filter{
+    background-color: #ffffff;
+    border: 1px solid #d9d9d9;
+    height: 28px;
+    width: 170px;
+    color: #b5b5b5;
+    font: 400 11px Lato;
+}

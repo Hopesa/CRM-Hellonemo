@@ -1,0 +1,195 @@
+ body{
+    background-color: #f4f4f4;
+}
+.login-box{
+    background-color: #ffffff;
+    border: 1px solid #e0e2e3;
+    height: 413px;
+    width: 43%;
+    margin-left: 28.6%;
+    margin-top:110px;
+}
+.login-hn{
+    background: url(images/hellonemo-logo.png);
+    width: 79px;
+    height: 84px;
+    margin-top: 47px;
+    margin-left:45%;
+}
+.login-form h1{
+    color: #7e7e7e;
+    font: 400 24px Lato;
+    margin-left: 10%;
+}
+.login-form form{
+    margin-top: 28px;
+    margin-left: 10%;
+    
+}
+.login-form input{
+    background-color: #ffffff;
+    border: 1px solid #e0e2e3;
+    width: 90%;
+    height: 47px;
+    padding: 15px;
+}
+.login-form button{
+    background-color: #34495e;
+    height: 40px;
+    width: 104px;
+    border: none;
+    border-bottom: solid 6px #243341;
+    margin-left: 35%;
+    margin-top:34px;
+    color: #ffffff;
+    font: 300 16px Lato;
+    transition: background-color 0.5s;
+}
+
+.login-form button:hover{
+    background-color: #2b3c4e;
+    height: 40px;
+    width: 104px;
+    border: none;
+    transition: 0.5s;
+    border-bottom: solid 6px #19232d;
+    margin-left: 35%;
+    margin-top:34px;
+    color: #ffffff;
+    font: 300 16px Lato;
+}
+@media screen and (max-width: 1200px) {
+ .login-box{
+    margin-left: 29%;
+}
+.login-hn{
+    margin-left:43%;
+}
+.login-form button{
+    margin-left:33%;
+}
+    
+}
+@media screen and (max-width: 1020px) {
+.login-box{
+    margin-left: 29.9%;
+}
+
+.login-hn{
+    margin-left:42%;
+}
+.login-form button{
+    margin-left:31.7%;
+}
+    
+}
+
+@media screen and (max-width: 900px) {
+    
+.login-box{
+    margin-left: 30%;
+}
+
+.login-hn{
+    margin-top: 47px;
+    margin-left:40%;
+}
+.login-form button{
+    margin-left:29%;
+}
+    
+}
+@media screen and (max-width: 820px) {
+    
+.login-box{
+    width: 48%;
+    margin-left: 27%;
+}
+
+.login-hn{
+    margin-top: 47px;
+    margin-left:39%;
+}
+.login-form button{
+    margin-left:28%;
+}
+    
+}
+
+@media screen and (max-width: 780px) {
+    
+.login-box{
+    margin-left: 27.3%;
+}
+
+.login-hn{
+    margin-top: 47px;
+    margin-left:39%;
+}
+.login-form button{
+    margin-left:29.3%;
+}
+    
+}
+@media screen and (max-width: 640px) {
+    
+.login-box{
+    width: 70%;
+    margin-left: 18%;
+}
+
+.login-hn{
+    margin-top: 47px;
+    margin-left:43%;
+}
+.login-form button{
+    margin-left:32.4%;
+}
+    
+}
+
+@media screen and (max-width: 570px) {
+    
+.login-box{
+    width: 70%;
+    margin-left: 17%;
+}
+
+.login-hn{
+    margin-top: 47px;
+    margin-left:40.9%;
+}
+.login-form button{
+    margin-left:31.2%;
+}
+    
+}
+
+@media screen and (max-width: 400px) {
+    
+.login-box{
+    width: 70%;
+    margin-left: 16%;
+}
+
+.login-hn{
+    margin-top: 47px;
+    margin-left:36%;
+}
+.login-form button{
+    margin-left:26%;
+}
+    
+}
+
+@media screen and (max-width: 320px) {
+
+.login-hn{
+    margin-top: 47px;
+    margin-left:33%;
+}
+.login-form button{
+    margin-left:19%;
+}
+    
+}
