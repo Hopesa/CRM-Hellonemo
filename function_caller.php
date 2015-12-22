@@ -130,6 +130,33 @@ else if($action == 'editproject'){
         echo 0;
     }
 }
+else if($action == 'sendemail') {
+    $sql = mysql_query('SELECT * from contact_data WHERE name="'.$_POST['emailto'].'"');
+    $data=mysql_fetch_assoc($sql);
+        $to = $data['Email'];
+        $mail = new PHPMailer;
+        $mail->isSMTP();
+        $mail->SMTPAuth = true;
+        $mail->Host = 'smtp.gmail.com';
+        $mail->Port = 587;
+        $mail->Username = 'dwiasa12@gmail.com';
+        $mail->Password = 'prakerin123';
+        $mail->setFrom('dwiasa1@gmail.com');
+        $mail->addAddress($to);
+        $mail->Subject = $_POST['subject'];
+        $mail->Body = $_POST['emailbody'];
+        $mail->SMTPDebug = 0;
+//send the message, check for errors
+        if (!$mail->send()) {
+            echo 0;
+        } else {
+            $sqlx = "INSERT INTO `email_history` (`Related_ID`, `Type`, `Subject`, `Body`, `Email`)
+VALUES ('$data[Contact_ID]','Contact', '$_POST[subject]', '$_POST[emailbody]', '$to')";
+            $queryx = mysql_query($sqlx);
+            echo 0;
+        }
+
+}
 else {
     echo 2;
 }

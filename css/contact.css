@@ -452,25 +452,3 @@
 .button:hover{
     background-color: #d62c1a;
 }
-/*Warning*/
-.warn{
-    box-shadow: 0px 4px 8.01px 0.99px rgba(0, 0, 0, 0.13);
-    width: 424px;
-    height: 59px;
-    display: block;
-    position: relative;
-    margin-top: 60px;
-    margin-left: 35.60%;
-    margin-bottom: -80px;
-    color: #ffffff;
-    font: 400 17px Lato;
-    text-align: center;
-    padding-top: 19px;
-    transition: 0.5s;
-}
-.error-flag{
-    background-color: #e74c3c;
-}
-.success-flag{
-    background-color: #1fa51f;
-}

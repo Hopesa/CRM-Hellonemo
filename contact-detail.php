@@ -76,7 +76,78 @@ $data=mysql_fetch_assoc($sql);
     <script src="http://fian.my.id/marka/static/marka/js/marka.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script>
+        $(document).ready(function() {
 
+
+            //when button is clicked
+
+            $('#sendEmailButton').click(function(){
+                check_availability();
+            });
+
+        });
+        //function to check availability
+        function check_availability(){
+
+            //get the values
+            var contact = $('#emailto').val();
+
+            //use ajax to run the check
+            $.post("check.php", { action:'contact',contact: contact },
+                function(result){
+                    //if the result is 1
+                    if(result == 1){
+                        //proceeds input contact
+                        sendEmail();
+                    }
+                    else{
+                        //show addCompany form
+                        blank();
+                    }
+                });
+
+        }
+        function sendEmail(){
+            var emailto = $('#emailto').val();
+            var subject = $('#subject').val();  //Subject
+            var emailbody = $('#emailbody').val(); //Email content
+            $.post("function_caller.php",{ action: 'sendemail', emailto: emailto, subject:subject, emailbody:emailbody},
+                function(result){
+
+                    if(result == 1){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn success-flag" >Email Sent</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else if(result == 2){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >System Error </div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else{
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >Email Failed to send</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                });
+        }
+
+        function blank(){
+            var contact = $('#emailto').val();
+            window.location.href="#";
+            $('#flag').html('<div class="warn error-flag">Error Contact: '+contact+' Not Found, <a href="contact.php#popup1" style="color:#48e4ce"> Please Add</a> </div>');
+            setTimeout(function(){
+                $('#flag').html('');
+            }, 1500);
+        }
+    </script>
     <style>
         body {
             display: block;
@@ -154,7 +225,7 @@ $data=mysql_fetch_assoc($sql);
     </ul>
 </div>
 <div class="content col-md-12">
-
+<div id="flag"></div>
     <div class="detail">
         <h1>Contact</h1>
         <div class="top">
@@ -233,7 +304,7 @@ $data=mysql_fetch_assoc($sql);
         <div class="col-md-6 detail-box">
             <h1>Email History</h1>
 
-            <div><a class="button" href="#popup1" style="margin: -35px 0px 0px 390px;">Send eMail</a>
+            <div><a class="button" href="#sendemail" style="margin: -35px 0px 0px 390px;">Send eMail</a>
 
                 <table class="table table-condensed detail-table">
                     <tbody>
@@ -243,11 +314,19 @@ $data=mysql_fetch_assoc($sql);
                         <th>Subject</th>
 
                     </tr>
-                    <tr class="clickable-row">
-                        <td>12/21/2015</td>
-                        <td>Nashihuddin Bilal</td>
-                        <td class="action"><img src="images/Edit-Icon.png"><img src="images/Delete-Icon.png"></td>
-                    </tr>
+<!--                    --><?php
+//                    $sqla=mysql_query("select * from activity_data where Type = 'Contact' and Related_ID = '$cid' ORDER BY Date_Created DESC");
+//                    while($dataa=mysql_fetch_array($sqla)){
+//                        $output ='';
+//                        $output.='<tr>
+//                                                        <td>'.$dataa['Date_Created'].'</td>
+//                                                        <td>'.$dataa['Detail'].'</td>
+//                                                        <td class="action"><img style="margin-left:10px" src="images/Delete-Icon.png"></td>
+//                                                        </tr>
+//                                                        ';
+//                        echo $output;
+//                    }
+//                    ?>
                     </tbody>
                 </table>
             </div>
@@ -255,7 +334,7 @@ $data=mysql_fetch_assoc($sql);
     </div>
 </div>
 
-<div id="popup1" class="overlay">
+<div id="sendemail" class="overlay">
     <div class="popup">
         <div class="red-header">
             <h2>Send<span> Email</span></h2>
@@ -265,10 +344,13 @@ $data=mysql_fetch_assoc($sql);
             <form class="detail-form">
                 <div class="column">
                     <label>To</label>
-                    <input type="text" placeholder="Prospect">
+                    <input type="text" placeholder="Contact Name" id="emailto" value="<?php echo $data['Name'] ?>">
+                    <br>
+                    <label>Subject Email</label>
+                    <input type="text" placeholder="Subject" id="subject">
                     <br>
                     <label style="margin-top:-340px;">Body</label>
-                    <textarea placeholder="Prospect"></textarea>
+                    <textarea id="emailbody"></textarea>
                     <br>
                     <label>Templates</label>
 
@@ -287,7 +369,7 @@ $data=mysql_fetch_assoc($sql);
                     </div>
                     <div style="margin-top:19px">
                         <a class="button" href="#">Back</a>
-                        <button class="button">Send</button>
+                        <button type="button" class="button" id="sendEmailButton">Send</button>
                     </div>
                 </div>
             </form>
