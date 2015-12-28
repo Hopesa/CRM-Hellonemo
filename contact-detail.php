@@ -112,7 +112,8 @@ $data=mysql_fetch_assoc($sql);
             var emailto = $('#emailto').val();
             var subject = $('#subject').val();  //Subject
             var emailbody = $('#emailbody').val(); //Email content
-            $.post("function_caller.php",{ action: 'sendemail', emailto: emailto, subject:subject, emailbody:emailbody},
+            var type = 'Contact';
+            $.post("function_caller.php",{ action: 'sendemail', emailto: emailto, subject:subject, emailbody:emailbody, type:type},
                 function(result){
 
                     if(result == 1){
@@ -310,23 +311,23 @@ $data=mysql_fetch_assoc($sql);
                     <tbody>
                     <tr class="panel-heading">
                         <th>Date</th>
-                        <th>Activity</th>
                         <th>Subject</th>
+                        <th>Body</th>
 
                     </tr>
-<!--                    --><?php
-//                    $sqla=mysql_query("select * from activity_data where Type = 'Contact' and Related_ID = '$cid' ORDER BY Date_Created DESC");
-//                    while($dataa=mysql_fetch_array($sqla)){
-//                        $output ='';
-//                        $output.='<tr>
-//                                                        <td>'.$dataa['Date_Created'].'</td>
-//                                                        <td>'.$dataa['Detail'].'</td>
-//                                                        <td class="action"><img style="margin-left:10px" src="images/Delete-Icon.png"></td>
-//                                                        </tr>
-//                                                        ';
-//                        echo $output;
-//                    }
-//                    ?>
+                    <?php
+                    $sqla=mysql_query("select * from email_history where Type = 'Contact' and Related_ID = '$cid' ORDER BY Date_Sent DESC");
+                    while($dataa=mysql_fetch_array($sqla)){
+                        $output ='';
+                        $output.='<tr>
+                                                        <td>'.$dataa['Date_Sent'].'</td>
+                                                        <td>'.$dataa['Subject'].'</td>
+                                                        <td>'.$dataa['Body'].'</td>
+                                                        </tr>
+                                                        ';
+                        echo $output;
+                    }
+                    ?>
                     </tbody>
                 </table>
             </div>

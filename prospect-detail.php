@@ -81,7 +81,79 @@ $datax = mysql_fetch_assoc($queryx);
     <script src="http://fian.my.id/marka/static/marka/js/marka.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script>
+        $(document).ready(function() {
 
+
+            //when button is clicked
+
+            $('#sendEmailButton').click(function(){
+                check_availability();
+            });
+
+        });
+        //function to check availability
+        function check_availability(){
+
+            //get the values
+            var contact = $('#emailto').val();
+
+            //use ajax to run the check
+            $.post("check.php", { action:'prospect',prospect: contact },
+                function(result){
+                    //if the result is 1
+                    if(result == 1){
+                        //proceeds input contact
+                        sendEmail();
+                    }
+                    else{
+                        //show addCompany form
+                        blank();
+                    }
+                });
+
+        }
+        function sendEmail(){
+            var emailto = $('#emailto').val();
+            var subject = $('#subject').val();  //Subject
+            var emailbody = $('#emailbody').val(); //Email content
+            var type = 'prospect';
+            $.post("function_caller.php",{ action: 'sendemail', emailto: emailto, subject:subject, emailbody:emailbody, type:type},
+                function(result){
+
+                    if(result == 1){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn success-flag" >Email Sent</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else if(result == 2){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >System Error </div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else{
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >Email Failed to send</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                });
+        }
+
+        function blank(){
+            var contact = $('#emailto').val();
+            window.location.href="#";
+            $('#flag').html('<div class="warn error-flag">Error Contact: '+contact+' Not Found, <a href="contact.php#popup1" style="color:#48e4ce"> Please Add</a> </div>');
+            setTimeout(function(){
+                $('#flag').html('');
+            }, 1500);
+        }
+    </script>
     <style>
         body {
             display: block;
@@ -230,29 +302,32 @@ $datax = mysql_fetch_assoc($queryx);
                     </tbody>
                 </table>
             </div>
-        </div>
-        <div class="col-md-6 detail-box">
+        </div> <div class="col-md-6 detail-box">
             <h1>Email History</h1>
 
-            <div><a class="button" href="#email" style="margin: -35px 0px 0px 390px;">Send eMail</a>
+            <div><a class="button" href="#sendemail" style="margin: -35px 0px 0px 390px;">Send eMail</a>
 
                 <table class="table table-condensed detail-table">
                     <tbody>
                     <tr class="panel-heading">
                         <th>Date</th>
-                        <th>Activity</th>
                         <th>Subject</th>
+                        <th>Body</th>
 
                     </tr>
-                    <tr class="clickable-row" data-href="http://laracast.com/">
-
-
-
-                        <td>12/21/2015</td>
-
-                        <td>Nashihuddin Bilal</td>
-                        <td class="action"><img src="images/Edit-Icon.png"><img src="images/Delete-Icon.png"></td>
-                    </tr>
+                    <?php
+                    $sqla=mysql_query("select * from email_history where Type = 'prospect' and Related_ID = '$pid' ORDER BY Date_Sent DESC");
+                    while($dataa=mysql_fetch_array($sqla)){
+                        $output ='';
+                        $output.='<tr>
+                                                        <td>'.$dataa['Date_Sent'].'</td>
+                                                        <td>'.$dataa['Subject'].'</td>
+                                                        <td>'.$dataa['Body'].'</td>
+                                                        </tr>
+                                                        ';
+                        echo $output;
+                    }
+                    ?>
                     </tbody>
                 </table>
             </div>
@@ -267,12 +342,12 @@ $datax = mysql_fetch_assoc($queryx);
         </div>
         <div class="content-pop">
             <h3 style="margin-bottom:22px">Are you sure want to follow up this prospect?
-                Status: No Status<center><br><a class="button" style="margin-left:40px">Follow Up</a>
+                Status: <?php echo $data['Status']?><center><br><button type="button" class="button" id="followupbtn" style="margin-left:40px">Follow Up</button>
                     <a href="#" class="button">Cancel</a><br></center></h3>
         </div>
     </div>
 </div>
-<div id="email" class="overlay">
+<div id="sendemail" class="overlay">
     <div class="popup">
         <div class="red-header">
             <h2>Send<span> Email</span></h2>
@@ -282,10 +357,13 @@ $datax = mysql_fetch_assoc($queryx);
             <form class="detail-form">
                 <div class="column">
                     <label>To</label>
-                    <input type="text" placeholder="Prospect">
+                    <input type="text" placeholder="Contact Name" id="emailto" value="<?php echo $datax['Name'] ?>">
+                    <br>
+                    <label>Subject Email</label>
+                    <input type="text" placeholder="Subject" id="subject">
                     <br>
                     <label style="margin-top:-340px;">Body</label>
-                    <textarea placeholder="Prospect"></textarea>
+                    <textarea id="emailbody"></textarea>
                     <br>
                     <label>Templates</label>
 
@@ -304,7 +382,7 @@ $datax = mysql_fetch_assoc($queryx);
                     </div>
                     <div style="margin-top:19px">
                         <a class="button" href="#">Back</a>
-                        <button class="button">Send</button>
+                        <button type="button" class="button" id="sendEmailButton">Send</button>
                     </div>
                 </div>
             </form>

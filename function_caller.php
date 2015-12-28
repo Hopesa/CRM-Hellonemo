@@ -2,7 +2,19 @@
 require($_SERVER['DOCUMENT_ROOT'].'/crm-native/includes/config.php');
 $action = $_POST['action'];
 
-if ($action == 'addnewcompany'){
+if($action == 'adduser'){
+    $pass = $_POST['pass'];
+    $user = $_POST['username'];
+    if(createAccount($user, $pass)){
+        echo 1;
+    }
+        else{
+            echo 0;
+        }
+
+    }
+
+else if ($action == 'addnewcompany'){
     $company = $_POST['company'];
     if(addnewcompany($_POST['company'],$_POST['industry'],$_POST['ctelephone'],$_POST['caddress'],$_POST['cemail'],$_POST['cdesc'])){
         $sql = mysql_query('SELECT company_name FROM company_data WHERE company_name = "'.$company.'"');
@@ -131,30 +143,81 @@ else if($action == 'editproject'){
     }
 }
 else if($action == 'sendemail') {
-    $sql = mysql_query('SELECT * from contact_data WHERE name="'.$_POST['emailto'].'"');
-    $data=mysql_fetch_assoc($sql);
+    $type = $_POST['type'];
+    $sql = 'SELECT * from Contact_data WHERE name="'.$_POST['emailto'].'"';
+    $query = mysql_query($sql) or trigger_error("Query Failed: " . mysql_error());
+    $data=mysql_fetch_assoc($query);
+    //Messy turnaround
+    if($type == 'contact'){
+        $id = $data['Contact_ID'];
+    }
+    else if($type == 'prospect'){
+        $queryx = mysql_query('SELECT * from prospect_data WHERE Contact_ID="'.$data['Contact_ID'].'"') or trigger_error("Query Failed: " . mysql_error());
+        $datax=mysql_fetch_assoc($queryx);
+        $id = $datax['Prospect_ID'];
+    }
+
+    else if($type == 'leads'){
+        $id = $data['Leads_ID'];
+    }
+
+    else if($type == 'account'){
+        $id = $data['Account_ID'];
+    }
+    else{
+        $id= 'Null';
+    }
         $to = $data['Email'];
         $mail = new PHPMailer;
         $mail->isSMTP();
         $mail->SMTPAuth = true;
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
-        $mail->Username = 'dwiasa12@gmail.com';
+        $mail->Username = 'dwiasa12@gmail.com'; //Sender Email
         $mail->Password = 'prakerin123';
         $mail->setFrom('dwiasa1@gmail.com');
-        $mail->addAddress($to);
+        $mail->addAddress($to); //Recipient eMail
         $mail->Subject = $_POST['subject'];
         $mail->Body = $_POST['emailbody'];
         $mail->SMTPDebug = 0;
 //send the message, check for errors
         if (!$mail->send()) {
             echo 0;
+            echo $sql;
         } else {
             $sqlx = "INSERT INTO `email_history` (`Related_ID`, `Type`, `Subject`, `Body`, `Email`)
-VALUES ('$data[Contact_ID]','Contact', '$_POST[subject]', '$_POST[emailbody]', '$to')";
+VALUES ('$id','$type', '$_POST[subject]', '$_POST[emailbody]', '$to')";
             $queryx = mysql_query($sqlx);
-            echo 0;
+            echo 1;
+            echo $id;
         }
+
+}
+//Code below is inefficient af
+else if($action = 'followup'){
+    $status = $_POST['status'];
+    if ($status = 'No Followup'){
+        $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 1' WHERE Prospect_ID = '$_POST[id]'";
+        $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
+        $sqlx = "INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
+VALUES (LAST_INSERT_ID(), 'Prospect', 'Prospect Created')";
+    }
+    else if ($status = 'Followup 1'){
+        $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 2' WHERE Prospect_ID = '$_POST[id]'";
+        $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
+    }
+    else if ($status = 'Followup 2'){
+        $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 3' WHERE Prospect_ID = '$_POST[id]'";
+        $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
+    }
+    else if ($status = 'Followup 3'){
+        $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 4' WHERE Prospect_ID = '$_POST[id]'";
+        $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
+    }
+    else if ($status = 'Followup 4'){
+        $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 5' WHERE Prospect_ID = '$_POST[id]'";
+        $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
+    }
 
 }
 else {

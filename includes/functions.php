@@ -1,5 +1,5 @@
 <?php
-function createAccount($pUsername, $pPassword) {
+function createAccount($pUsername, $pPassword) { //User Account, Not that "Account"
     // First check we have data passed in.
     if (!empty($pUsername) && !empty($pPassword)) {
 
@@ -133,13 +133,15 @@ function addProspect($contact, $value, $source, $expi, $owner){
     $status = 'Pending';
     $sql = "INSERT INTO `prospect_data` (`Contact_ID`,`Company_ID`, `Expiration`, `Prospect_Owner_ID`, `Source`, `Status`, `Potential_Value`)
 VALUES ('$contact_ID', '$company_ID', '$expi', '$user_ID', '$source', '$status', '$value')";
-    $query = mysql_query($sql) or die(mysql_error());
+    $query = mysql_query($sql);
+    $sqlx = "UPDATE contact_data SET `Status` = 'On Prospect' WHERE `Contact_ID` = '$contact_ID'";
+    $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
     $sqlx = "INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
 VALUES (LAST_INSERT_ID(), 'Prospect', 'Prospect Created')";
-    $queryx = mysql_query($sqlx) or die(mysql_error());
+    $queryx = mysql_query($sqlx);
     $sqlx = "INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
 VALUES ('$contact_ID', 'Contact', 'Contact Added to Prospect')";
-    $queryx = mysql_query($sqlx) or die(mysql_error());
+    $queryx = mysql_query($sqlx);
 
     if ($query) {
         return true;
@@ -174,6 +176,7 @@ VALUES (LAST_INSERT_ID(), 'Leads', 'Leads Created')";
 VALUES ('$data[Contact_ID]', 'Contact', 'Contact Added to Leads')";
     $queryx = mysql_query($sqlx) or die(mysql_error());
     if ($query) {
+        $contacq = mysql_query("UPDATE contact_data SET `Status` = 'On Leads' WHERE `Contact_ID` = '$data[Contact_ID]'") or trigger_error("Query Failed: " . mysql_error());
         $sqlxx = mysql_query("DELETE FROM `prospect_data` WHERE `Prospect_ID` = '$pid'");
         if ($sqlx){
             return true;
@@ -214,6 +217,7 @@ VALUES (LAST_INSERT_ID(), 'Account', 'Account Created')";
         $sqlx = "INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
 VALUES ('$data[Contact_ID]', 'Contact', 'An Account Created for Contact')";
         $queryx = mysql_query($sqlx) or die(mysql_error());
+        $contacq = mysql_query("UPDATE contact_data SET `Status` = 'Account Created' WHERE `Contact_ID` = '$data[Contact_ID]'") or trigger_error("Query Failed: " . mysql_error());
         $sqlxx = mysql_query("DELETE FROM `leads_data` WHERE `Leads_ID` = '$lid'");
         if ($sqlxx){
             return true;

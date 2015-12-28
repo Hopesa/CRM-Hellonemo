@@ -68,20 +68,52 @@ if (isset($_GET['search'])){
     <link rel="stylesheet prefetch" href="http://fian.my.id/marka/static/marka/css/marka.css">
     <link rel="stylesheet" href="css/filter.css">
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="http://fian.my.id/marka/static/marka/js/marka.js"></script>
-    <script src="js/filter.js"></script>
     <script src="js/bootstrap.js"></script>
     <script>
-    $(function() {
-    $('#panel').hide();
-});
-  
-$('body').on('click','#nav li a', function(e) {
-    $('#panel').show();
-    $('#panel').children().hide();
-    $($(this).attr('href')).show();
-    e.preventDefault();
-});
+        //Really messy
+        $(document).ready(function(){
+            $("#prospect").hide();
+            $("#leads").hide();
+            $("#account").hide();
+            $("#project").hide();
+            $("#buttoncontact").click(function(){
+                $("#prospect").hide();
+                $("#leads").hide();
+                $("#account").hide();
+                $("#project").hide();
+                $("#contact").toggle();
+            });
+            $("#buttonprospect").click(function(){
+                $("#contact").hide();
+                $("#leads").hide();
+                $("#account").hide();
+                $("#project").hide();
+                $("#prospect").toggle();
+            });
+            $("#buttonleads").click(function(){
+                $("#prospect").hide();
+                $("#contact").hide();
+                $("#account").hide();
+                $("#project").hide();
+                $("#leads").toggle();
+            });
+            $("#buttonaccount").click(function(){
+
+                $("#prospect").hide();
+                $("#leads").hide();
+                $("#contact").hide();
+                $("#project").hide();
+                $("#account").toggle();
+            });
+            $("#buttonproject").click(function(){
+
+                $("#prospect").hide();
+                $("#leads").hide();
+                $("#account").hide();
+                $("#contact").hide();
+                $("#project").toggle();
+            });
+        });
     </script>
 
     <style>
@@ -165,11 +197,11 @@ $('body').on('click','#nav li a', function(e) {
             <h1>Search Result</h1>
             <div class="nav-small">
                 <ul id="nav">
-                    <li><a href="#contact">Contact</a></li>
-                    <li>Leads</li>
-                    <li>Prospect</li>
-                    <li>Account</li>
-                    <li>Projects</li>
+                    <li id="buttoncontact">Contact</li>
+                    <li id="buttonleads">Leads</li>
+                    <li id="buttonprospect">Prospect</li>
+                    <li id="buttonaccount">Account</li>
+                    <li id="buttonproject">Projects</li>
                 </ul>
             </div>
             
@@ -240,7 +272,7 @@ $('body').on('click','#nav li a', function(e) {
 ?>
                     </tbody></table>
             </div>
-            <div class="panel-body no-padding" id="Leads">
+            <div class="panel-body no-padding" id="leads">
                 <table class="table table-condensed contact-table">
                     <tbody>
                     <tr class="panel-heading">
