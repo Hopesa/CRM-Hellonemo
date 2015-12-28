@@ -90,6 +90,9 @@ $datax = mysql_fetch_assoc($queryx);
             $('#sendEmailButton').click(function(){
                 check_availability();
             });
+            $('#followupButton').click(function(){
+                followup();
+            });
 
         });
         //function to check availability
@@ -112,6 +115,25 @@ $datax = mysql_fetch_assoc($queryx);
                     }
                 });
 
+        }
+        function followup(){
+            var pid = <?php echo $pid ?>;
+            var status ="<?php echo $data['Status']?>";
+            $.post("function_caller.php", { action:'followup',id : pid , status: status},
+                function(result){
+                    //if the result is 1
+                    if(result == 1){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn success-flag" >Status Updated</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else{
+                        //show addCompany form
+                        blank();
+                    }
+                });
         }
         function sendEmail(){
             var emailto = $('#emailto').val();
@@ -254,8 +276,10 @@ $datax = mysql_fetch_assoc($queryx);
                     <br>
                     <label>Status</label>
                     <input readonly value="'.$data['Status'].'" class="readonly">
+                    <br><!--lel so many br-->
                     <br>
-
+                    <br>
+                    <a class="button" href="leads.php?pid='.$pid.'#addLeads">Add to Leads</a>
 
 
 
@@ -266,7 +290,6 @@ $datax = mysql_fetch_assoc($queryx);
                     <br>
                     <label>Owner</label>
                     <input type="text" value="'.$datax['username'].'" class="readonly">
-
                 </div>';
                 echo $output;
 
@@ -302,7 +325,8 @@ $datax = mysql_fetch_assoc($queryx);
                     </tbody>
                 </table>
             </div>
-        </div> <div class="col-md-6 detail-box">
+        </div>
+        <div class="col-md-6 detail-box">
             <h1>Email History</h1>
 
             <div><a class="button" href="#sendemail" style="margin: -35px 0px 0px 390px;">Send eMail</a>
@@ -342,7 +366,7 @@ $datax = mysql_fetch_assoc($queryx);
         </div>
         <div class="content-pop">
             <h3 style="margin-bottom:22px">Are you sure want to follow up this prospect?
-                Status: <?php echo $data['Status']?><center><br><button type="button" class="button" id="followupbtn" style="margin-left:40px">Follow Up</button>
+                Status: <?php echo $data['Status']?><center><br><button type="button" class="button" id="followupButton" style="margin-left:40px">Follow Up</button>
                     <a href="#" class="button">Cancel</a><br></center></h3>
         </div>
     </div>

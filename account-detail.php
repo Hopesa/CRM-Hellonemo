@@ -78,7 +78,116 @@ $datax=mysql_fetch_assoc($sqlx);
     <script src="http://fian.my.id/marka/static/marka/js/marka.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script>
+        $(document).ready(function() {
 
+
+            //when button is clicked
+
+            $('#sendEmailButton').click(function(){
+                check_availability();
+            });
+            $('#sendInvoiceButton').click(function(){
+                sendInvoice();
+            });
+
+        });
+        //function to check availability
+        function check_availability(){
+
+            //get the values
+            var contact = $('#emailto').val();
+
+            //use ajax to run the check
+            $.post("check.php", { action:'leads',leads: contact },
+                function(result){
+                    //if the result is 1
+                    if(result == 1){
+                        //proceeds input contact
+                        sendEmail();
+                    }
+                    else{
+                        //show addCompany form
+                        blank();
+                    }
+                });
+
+        }
+
+        function sendEmail(){
+            var emailto = $('#emailto').val();
+            var subject = $('#subject').val();  //Subject
+            var emailbody = $('#emailbody').val(); //Email content
+            var type = 'account';
+            $.post("function_caller.php",{ action: 'sendemail', emailto: emailto, subject:subject, emailbody:emailbody, type:type},
+                function(result){
+
+                    if(result == 1){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn success-flag" >Email Sent</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else if(result == 2){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >System Error </div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else{
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >Email Failed to send</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                });
+        }
+        function sendInvoice(){
+            var id = <?php echo $lid ?>;
+            var name = "<?php echo $datax['Name'] ?>";
+            var cost = $('#cost').val();
+            var total = $('#total').val();
+            var company = "<?php echo $datax['Company_Name']?>"
+            var email = "<?php echo $datax['Email']?>";
+            $.post("function_caller.php",{ action: 'quotation', id:id, name:name,cost:cost, total:total,company:company, email:email},
+                function(result){
+
+                    if(result == 1){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn success-flag" >Email Sent</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else if(result == 2){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >System Error </div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else{
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >Email Failed to send</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                });
+        }
+
+        function blank(){
+            var contact = $('#emailto').val();
+            window.location.href="#";
+            $('#flag').html('<div class="warn error-flag">Error Contact: '+contact+' Not Found, <a href="contact.php#popup1" style="color:#48e4ce"> Please Add</a> </div>');
+            setTimeout(function(){
+                $('#flag').html('');
+            }, 1500);
+        }
+    </script>
     <style>
         body {
             display: block;
@@ -265,27 +374,34 @@ $datax=mysql_fetch_assoc($sqlx);
         <div class="content-pop">
             <br>
             <div class="column">
-                <label>Name</label><input readonly class="readonly" value="{{Value}}">
-                <label>Name</label><input readonly class="readonly" value="{{Value}}">
-                <label>Name</label><input readonly class="readonly" value="{{Value}}">
+                <label>Name</label><input readonly class="readonly" value="<?php echo $datax['Name']?>">
+                <label>Company</label><input readonly class="readonly" value="<?php echo $datax['Company_Name']?>">
+                <label>Email</label><input readonly class="readonly" value="<?php echo $datax['Email']?>">
             </div>
             <table class="table table-condensed detail-table">
                 <tbody>
                 <tr class="panel-heading">
-                    <th>Date</th>
-                    <th>Activity</th>
-                    <th>Subject</th>
+                    <th>Project Name</th>
+                    <th>Type</th>
+                    <th>Value</th>
 
                 </tr>
-                <tr class="clickable-row" data-href="http://laracast.com/">
-
-
-
-                    <td>12/21/2015</td>
-
-                    <td>Nashihuddin Bilal</td>
-                    <td class="action"><img src="images/Edit-Icon.png"><img src="images/Delete-Icon.png"></td>
-                </tr>
+                <?php
+                $total = '';  //init total cost/value
+                $sqla=mysql_query("select * from project_data where account_ID = $aid");
+                while($dataa=mysql_fetch_array($sqla)){
+                    $output ='';
+                    $output.='<tr>
+                                                        <td>'.$dataa['Project_Name'].'</td>
+                                                        <td>'.$dataa['Type'].'</td>
+                                                        <td>'.$dataa['Value'].'</td>
+                                                        </tr>
+                                                        ';
+                    $total = $total + $dataa['Value'];
+                    echo $output;
+                }
+                echo "<tr><td>Total</td><td></td><td>".$total."</td></tr>";
+                ?>
                 </tbody>
             </table>
             <div style="margin-left:366px"><a href="#" class="button">Send Invoice</a><a href="#" class="button">Cancel</a></div><br>

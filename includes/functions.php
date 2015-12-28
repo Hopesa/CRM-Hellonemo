@@ -274,6 +274,122 @@ function editProject($prid, $prname, $value, $type, $detail, $source, $date, $st
     return false;
 
 }
+function addTemplate($name, $subject, $body){
+    $query = mysql_query("INSERT INTO `template_email` (`name`, `subject`, `body`) VALUES ('$name', '$subject', '$body')");
+    if($query){
+        return true;
+    }
+    return false;
+}
+function sendQuotation($id ,$name ,$projectname, $description, $cost, $total, $email){ //so many html
+    $current_date = date('d/m/Y == H:i:s');
+    $body = '';
+    $body.='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="viewport" content="width=device-width" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Quotations</title>
+<link href="http://mailgun.github.io/transactional-email-templates/styles.css" media="all" rel="stylesheet" type="text/css" />
+</head>
+
+<body itemscope itemtype="http://schema.org/EmailMessage">
+
+<table class="body-wrap">
+	<tr>
+		<td></td>
+		<td class="container" width="600">
+			<div class="content">
+				<table class="main" width="100%" cellpadding="0" cellspacing="0">
+					<tr>
+						<td class="content-wrap aligncenter">
+							<table width="100%" cellpadding="0" cellspacing="0">
+								<tr>
+									<td class="content-block">
+										<h1 class="aligncenter">Quotation</h1>
+									</td>
+								</tr>
+								<tr>
+									<td class="content-block">
+										<h2 class="aligncenter">Thanks for Inquiring Us.</h2>
+									</td>
+								</tr>
+								<tr>
+									<td class="content-block aligncenter">
+										<table class="invoice">
+											<tr>
+												<td>'.$name.'<br>'.$current_date.'</td>
+											</tr>
+											<tr>
+												<td>
+													<table class="invoice-items" cellpadding="0" cellspacing="0">
+														<tr>
+															<td>Service 1 : '.$projectname.'</td>
+															<td class="alignright">'.$cost.'</td>
+														</tr>
+
+														<tr class="total">
+															<td class="alignright" width="80%">Total</td>
+															<td class="alignright">'.$total.'</td>
+														</tr>
+													</table>
+												</td>
+											</tr>
+										</table>
+									</td>
+								</tr>
+								<tr>
+									<td class="content-block aligncenter">
+										Please Email Us for follow through
+									</td>
+								</tr>
+								<tr>
+									<td class="content-block aligncenter">
+										Hellonemo Digital Agency. Griya Shanta, Malang
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</table>
+				<div class="footer">
+					<table width="100%">
+						<tr>
+							<td class="aligncenter content-block">Questions? Email <a href="mailto:">hello@hellonemo.com</a></td>
+						</tr>
+					</table>
+				</div></div>
+		</td>
+		<td></td>
+	</tr>
+</table>
+
+</body>
+</html>';
+    $subject = 'Quotation for '.$projectname.'';
+    $to = $email;
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->SMTPAuth = true;
+    $mail->Host = 'smtp.gmail.com';
+    $mail->Port = 587;
+    $mail->Username = 'dwiasa12@gmail.com'; //Sender Email
+    $mail->Password = 'prakerin123';
+    $mail->setFrom('dwiasa1@gmail.com');
+    $mail->addAddress($to); //Recipient eMail
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+    $mail->SMTPDebug = 0;
+//send the message, check for errors
+    if (!$mail->send()) {
+        echo 0;
+    } else {
+        $sqlx = "INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
+VALUES ('$id', 'Leads', 'Quotation Sent')";
+        $queryx = mysql_query($sqlx) or die(mysql_error());
+        return true;
+    }
+}
 function addCase(){
 
     if ($query) {

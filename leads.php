@@ -392,8 +392,7 @@ and user_data.user_ID='$data[Leads_Creator_ID]'";
             <a class="close" href="#">&times;</a>
         </div>
         <div class="content-pop">
-            <h3 style="margin-bottom:22px">Are you sure want to follow up this prospect?
-                Status: No Status<center><br><button type="button" class="button" id="ConfirmationButton" style="margin-left:40px">Follow Up</button>
+            <h3 style="margin-bottom:22px">Are you sure want to add this prospect to leads? This will delete the prospect<center><br><button type="button" class="button" id="ConfirmationButton" style="margin-left:40px">Add to Leads</button>
                     <a href="#" class="button">Cancel</a><br></center></h3>
         </div>
     </div>

@@ -127,6 +127,9 @@ if (isset($_GET['search'])){
                 $('#ConfirmationButton').click(function(){
                     add_user();
                 });
+                $('#saveTemplateButton').click(function(){
+                    add_template();
+                });
 
             });
             function confirmation(){
@@ -146,7 +149,7 @@ if (isset($_GET['search'])){
             }
             function add_user(){
                 var username = $('#username').val();
-                var pass = $('#pass').val();  //Potential Value
+                var pass = $('#pass').val();
 
                 $.post("function_caller.php",{ action: 'adduser', username:username, pass:pass},
                     function(result){
@@ -161,6 +164,30 @@ if (isset($_GET['search'])){
                         else{
                             window.location.href="#";
                             $('#flag').html('<div class="warn error-flag" >'+username+' Failed to Add</div>');
+                            setTimeout(function(){
+                                $('#flag').html('');
+                            }, 1500);
+                        }
+                    });
+            }
+            function add_template(){
+                var name = $('#templatename').val();
+                var subject = $('#tempsubject').val();
+                var body = $('#tempbody').val();
+
+                $.post("function_caller.php",{ action: 'addtemplate', name:name, subject:subject, body:body},
+                    function(result){
+
+                        if(result == 1){
+                            window.location.href="#";
+                            $('#flag').html('<div class="warn success-flag" >Template Successfully Added</div>');
+                            setTimeout(function(){
+                                $('#flag').html('');
+                            }, 1500);
+                        }
+                        else{
+                            window.location.href="#";
+                            $('#flag').html('<div class="warn error-flag" >Template Failed to Add</div>');
                             setTimeout(function(){
                                 $('#flag').html('');
                             }, 1500);
@@ -322,7 +349,6 @@ if (isset($_GET['search'])){
                             </tbody>
                         </table>
                     </div>
-<!--                    Popup-->
                             <!-- Pop Ups-->
 
         <div id="addUser" class="overlay">
@@ -529,30 +555,59 @@ if (isset($_GET['search'])){
                 <div class="panel" id="template">
                     <div class="panel-body no-padding col-md-5">
                         <h1>Mail Template</h1>
-                        <a style="margin:0% 0% 3% 80%" class="button" href="#addUsers">New Mail Template</a>
+                        <a style="margin:0% 0% 3% 75%" class="button" href="#addtemplate">New Mail Template</a>
                         <table class="table table-condensed contact-table">
                             <tbody>
                             <tr class="panel-heading">
                                 <th>Name</th>
-                                <th>Role</th>
-                                <th>Last Changed</th>
+                                <th>Subject</th>
                                 <th>Action</th>
                             </tr>
                             <?php
-                            $sql=mysql_query("select * from user_data");
+                            $sql=mysql_query("select * from template_email");
                             while($data=mysql_fetch_array($sql)){
                                 $output ='';
                                 $output.='<tr>
-                                    <td>'.$data['username'].'</td>
-                                    <td>'.$data['Role'].'</td>
-                                    <td>'.$data['Last_modified'].'</td>
-                                    <td class="action"><a href=setting.php?cid=#editContact><img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                    <td>'.$data['name'].'</td>
+                                    <td>'.$data['subject'].'</td>
+                                    <td class="action"><a href=setting.php><img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
                                 </tr>';
                                 echo $output;
                             }
                             ?>
                             </tbody>
                         </table>
+                    </div>
+
+                    <div id="addtemplate" class="overlay">
+                        <div class="popup">
+                            <div class="red-header">
+                                <h2>Email<span> Template</span></h2>
+                                <a class="close" href="#">&times;</a>
+                            </div>
+                            <div class="content-pop">
+                                <form class="detail-form">
+                                    <div class="column-full">
+                                        <label>Template Name</label>
+                                        <input type="text" placeholder="Template Name" id="templatename">
+                                        <br>
+                                        <label>Subject</label>
+                                        <input type="text" placeholder="Subject" id="tempsubject">
+                                        <br>
+                                        <label style="margin-top:-340px;">Body</label>
+                                        <textarea id="tempbody"></textarea>
+                                        <br>
+                                        <label>Templates</label>
+
+                                        
+                                        <div style="margin-top:19px">
+                                            <button type="button" class="button" id="saveTemplateButton">Save</button>
+                                            <a class="button" href="#">Cancel</a>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
 <!--Data Management Menu-->

@@ -62,10 +62,11 @@ $sql=mysql_query("select * from leads_data WHERE Leads_ID='$lid'");
 $data=mysql_fetch_assoc($sql);
 
 //Take Data Early
-$sqlx = "SELECT * FROM contact_data,company_data,user_data WHERE contact_data.contact_ID= '$data[Contact_ID]' and company_data.company_ID='$data[Company_ID]'
+$sqlx = "SELECT * FROM contact_data,user_data WHERE contact_data.contact_ID= '$data[Contact_ID]'
 and user_data.user_ID='$data[Leads_Creator_ID]'";
 $queryx = mysql_query($sqlx) or trigger_error("error" . mysql_error());
 $datax = mysql_fetch_assoc($queryx);
+$cdata = mysql_fetch_assoc(mysql_query("SELECT * FROM company_data WHERE company_ID='$data[Company_ID]'")); //Can this be done?
 ?>
 <!DOCTYPE html>
 <html>
@@ -81,6 +82,117 @@ $datax = mysql_fetch_assoc($queryx);
     <script src="http://fian.my.id/marka/static/marka/js/marka.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/bootstrap.js"></script>
+    <script>
+        $(document).ready(function() {
+
+
+            //when button is clicked
+
+            $('#sendEmailButton').click(function(){
+                check_availability();
+            });
+            $('#sendQuotationButton').click(function(){
+                sendQuotation();
+            });
+
+        });
+        //function to check availability
+        function check_availability(){
+
+            //get the values
+            var contact = $('#emailto').val();
+
+            //use ajax to run the check
+            $.post("check.php", { action:'leads',leads: contact },
+                function(result){
+                    //if the result is 1
+                    if(result == 1){
+                        //proceeds input contact
+                        sendEmail();
+                    }
+                    else{
+                        //show addCompany form
+                        blank();
+                    }
+                });
+
+        }
+
+        function sendEmail(){
+            var emailto = $('#emailto').val();
+            var subject = $('#subject').val();  //Subject
+            var emailbody = $('#emailbody').val(); //Email content
+            var type = 'leads';
+            $.post("function_caller.php",{ action: 'sendemail', emailto: emailto, subject:subject, emailbody:emailbody, type:type},
+                function(result){
+
+                    if(result == 1){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn success-flag" >Email Sent</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else if(result == 2){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >System Error </div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else{
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >Email Failed to send</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                });
+        }
+        function sendQuotation(){
+            var id = <?php echo $lid ?>;
+            var name = "<?php echo $datax['Name'] ?>";
+            var projectname = $('#projectname').val();
+            var description = $('#description').val();
+            var cost = $('#cost').val();
+            var total = $('#total').val();
+            var email = "<?php echo $datax['Email']?>";
+            $.post("function_caller.php",{ action: 'quotation', id:id, name:name, projectname:projectname, description:description, cost:cost, total:total, email:email},
+                function(result){
+
+                    if(result == 1){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn success-flag" >Email Sent</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else if(result == 2){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >System Error </div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else{
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >Email Failed to send</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                });
+        }
+
+        function blank(){
+            var contact = $('#emailto').val();
+            window.location.href="#";
+            $('#flag').html('<div class="warn error-flag">Error Contact: '+contact+' Not Found, <a href="contact.php#popup1" style="color:#48e4ce"> Please Add</a> </div>');
+            setTimeout(function(){
+                $('#flag').html('');
+            }, 1500);
+        }
+    </script>
 
     <style>
         body {
@@ -159,7 +271,7 @@ $datax = mysql_fetch_assoc($queryx);
     </ul>
 </div>
 <div class="content col-md-12">
-
+<div id="flag"></div>
     <div class="detail">
         <h1>Leads</h1>
         <div class="top">
@@ -178,7 +290,7 @@ $datax = mysql_fetch_assoc($queryx);
                     <input type="text" value="'.$datax['Name'].'" class="readonly">
                     <br>
                     <label>Company</label>
-                    <input type="text" value="'.$datax['Company_Name'].'" class="readonly">
+                    <input type="text" value="'.$cdata['Company_Name'].'" class="readonly">
                     <br>
                     <label>Status</label>
                     <input readonly value="'.$data['Status'].'" class="readonly">
@@ -209,7 +321,7 @@ $datax = mysql_fetch_assoc($queryx);
     <div class="col-md-12 detail-2">
         <div class="col-md-6 detail-box">
             <h1>Activity History</h1>
-            <div><a class="button" href="#quote" style="margin: -35px 0px 0px 390px;">Send Quotation</a>
+            <div><a class="button" href="#quote" style="margin: -35px 0px 0px 380px;">Send Quotation</a>
                 <table class="table table-condensed detail-table">
                     <tbody>
                     <tr class="panel-heading">
@@ -238,25 +350,29 @@ $datax = mysql_fetch_assoc($queryx);
         <div class="col-md-6 detail-box">
             <h1>Email History</h1>
 
-            <div><a class="button" href="#email" style="margin: -35px 0px 0px 390px;">Send eMail</a>
+            <div><a class="button" href="#sendemail" style="margin: -35px 0px 0px 390px;">Send eMail</a>
 
                 <table class="table table-condensed detail-table">
                     <tbody>
                     <tr class="panel-heading">
                         <th>Date</th>
-                        <th>Activity</th>
                         <th>Subject</th>
+                        <th>Body</th>
 
                     </tr>
-                    <tr class="clickable-row" data-href="http://laracast.com/">
-
-
-
-                        <td>12/21/2015</td>
-
-                        <td>Nashihuddin Bilal</td>
-                        <td class="action"><img src="images/Edit-Icon.png"><img src="images/Delete-Icon.png"></td>
-                    </tr>
+                    <?php
+                    $sqla=mysql_query("select * from email_history where Type = 'leads' and Related_ID = '$lid' ORDER BY Date_Sent DESC");
+                    while($dataa=mysql_fetch_array($sqla)){
+                        $output ='';
+                        $output.='<tr>
+                                                        <td>'.$dataa['Date_Sent'].'</td>
+                                                        <td>'.$dataa['Subject'].'</td>
+                                                        <td>'.$dataa['Body'].'</td>
+                                                        </tr>
+                                                        ';
+                        echo $output;
+                    }
+                    ?>
                     </tbody>
                 </table>
             </div>
@@ -264,7 +380,7 @@ $datax = mysql_fetch_assoc($queryx);
     </div>
 </div>
 
-<div id="email" class="overlay">
+<div id="sendemail" class="overlay">
     <div class="popup">
         <div class="red-header">
             <h2>Send<span> Email</span></h2>
@@ -274,10 +390,13 @@ $datax = mysql_fetch_assoc($queryx);
             <form class="detail-form">
                 <div class="column">
                     <label>To</label>
-                    <input type="text" placeholder="Prospect">
+                    <input type="text" placeholder="Contact Name" id="emailto" value="<?php echo $datax['Name'] ?>">
+                    <br>
+                    <label>Subject Email</label>
+                    <input type="text" placeholder="Subject" id="subject">
                     <br>
                     <label style="margin-top:-340px;">Body</label>
-                    <textarea placeholder="Prospect"></textarea>
+                    <textarea id="emailbody"></textarea>
                     <br>
                     <label>Templates</label>
 
@@ -296,7 +415,7 @@ $datax = mysql_fetch_assoc($queryx);
                     </div>
                     <div style="margin-top:19px">
                         <a class="button" href="#">Back</a>
-                        <button class="button">Send</button>
+                        <button type="button" class="button" id="sendEmailButton">Send</button>
                     </div>
                 </div>
             </form>
@@ -312,37 +431,25 @@ $datax = mysql_fetch_assoc($queryx);
         <div class="content-pop">
             <form class="contact-form">
                 <div class="column">
-                    <label>Title</label>
-                    <input type="text" placeholder="Prospect">
-                    <br>
+
                     <label>Unit 1</label>
-                    <input type="text" placeholder="Prospect">
+                    <input type="text" placeholder="Project Name" id="projectname">
                     <br>
                     <label>Description</label>
-                    <input type="text" placeholder="Type">
+                    <input type="text" placeholder="Description" id="description">
                     <br>
                     <label>Cost</label>
-                    <input type="text" placeholder="Type">
+                    <input type="number" placeholder="Cost" id="cost">
                     <br>
                     <label>Total</label>
-                    <input type="text" placeholder="Type">
+                    <input type="number" placeholder="Total" id="total">
                     <br>
                     <br>
                     <button class="button">Add Unit</button>
-                    <button class="button">Save</button>
+                    <button class="button" id="sendQuotationButton">Send Quotation</button>
                     <a class="button" href="#">Cancel</a>
                     <br>
                     <br>
-                </div>
-                <div class="column">
-                    <label>Email</label>
-                    <input type="text" placeholder="Prospect">
-                    <br>
-                    <label>Reported To</label>
-                    <input type="text" placeholder="Type">
-                    <br>
-                    <label>Owner</label>
-                    <textarea></textarea>
                 </div>
             </form>
         </div>

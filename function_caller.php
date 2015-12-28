@@ -142,7 +142,16 @@ else if($action == 'editproject'){
         echo 0;
     }
 }
+else if($action == 'addtemplate'){
+    if(addTemplate($_POST['name'], $_POST['subject'], $_POST['body'])){
+        echo 1;
+    }
+    else{
+        echo 0;
+    }
+}
 else if($action == 'sendemail') {
+    //Move to Functions if you had time
     $type = $_POST['type'];
     $sql = 'SELECT * from Contact_data WHERE name="'.$_POST['emailto'].'"';
     $query = mysql_query($sql) or trigger_error("Query Failed: " . mysql_error());
@@ -158,11 +167,13 @@ else if($action == 'sendemail') {
     }
 
     else if($type == 'leads'){
-        $id = $data['Leads_ID'];
+        $queryx = mysql_query('SELECT * from leads_data WHERE Contact_ID="'.$data['Contact_ID'].'"') or trigger_error("Query Failed: " . mysql_error());
+        $datax=mysql_fetch_assoc($queryx);
+        $id = $datax['Leads_ID'];
     }
 
     else if($type == 'account'){
-        $id = $data['Account_ID'];
+        $id = $datax['Account_ID'];
     }
     else{
         $id= 'Null';
@@ -189,34 +200,54 @@ else if($action == 'sendemail') {
 VALUES ('$id','$type', '$_POST[subject]', '$_POST[emailbody]', '$to')";
             $queryx = mysql_query($sqlx);
             echo 1;
-            echo $id;
         }
 
 }
+else if($action == 'quotation'){
+    if(sendQuotation($_POST['id'], $_POST['name'], $_POST['projectname'], $_POST['description'], $_POST['cost'], $_POST['total'], $_POST['email'])){
+        echo 1;
+    }
+    else{
+        echo 0;
+    }
+}
 //Code below is inefficient af
-else if($action = 'followup'){
+else if($action == 'followup'){
     $status = $_POST['status'];
-    if ($status = 'No Followup'){
+    if ($status == 'No Followup' or $status == 'Pending'){
         $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 1' WHERE Prospect_ID = '$_POST[id]'";
         $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
-        $sqlx = "INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
-VALUES (LAST_INSERT_ID(), 'Prospect', 'Prospect Created')";
+        $query = mysql_query("INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
+VALUES ('$_POST[id]', 'Prospect', 'Status Changed : Followup 1')");
+        echo 1;
     }
-    else if ($status = 'Followup 1'){
+    else if ($status == 'Followup 1'){
         $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 2' WHERE Prospect_ID = '$_POST[id]'";
         $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
+        $query = mysql_query("INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
+VALUES ('$_POST[id]', 'Prospect', 'Status Changed : Followup 2')");
+        echo 1;
     }
-    else if ($status = 'Followup 2'){
+    else if ($status == 'Followup 2'){
         $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 3' WHERE Prospect_ID = '$_POST[id]'";
         $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
+        $query = mysql_query("INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
+VALUES ('$_POST[id]', 'Prospect', 'Status Changed : Followup 3')");
+        echo 1;
     }
-    else if ($status = 'Followup 3'){
+    else if ($status == 'Followup 3'){
         $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 4' WHERE Prospect_ID = '$_POST[id]'";
         $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
+        $query = mysql_query("INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
+VALUES ('$_POST[id]', 'Prospect', 'Status Changed : Followup 4')");
+        echo 1;
     }
-    else if ($status = 'Followup 4'){
+    else if ($status == 'Followup 4'){
         $sqlx = "UPDATE prospect_data SET `Status` = 'Followup 5' WHERE Prospect_ID = '$_POST[id]'";
         $queryx = mysql_query($sqlx) or trigger_error("Query Failed: " . mysql_error());
+        $query = mysql_query("INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
+VALUES ('$_POST[id]', 'Prospect', 'Status Changed : Followup 5')");
+        echo 1;
     }
 
 }
