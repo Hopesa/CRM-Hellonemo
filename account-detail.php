@@ -60,9 +60,10 @@ if (isset($_GET['aid'])){
 }
 $sql=mysql_query("select * from account_data WHERE Account_ID ='$aid' ");
 $data=mysql_fetch_assoc($sql);
-$sqlx=mysql_query("SELECT * FROM contact_data,company_data,user_data WHERE contact_data.contact_ID= '$data[Contact_ID]' and company_data.company_ID='$data[Company_ID]'
+$sqlx=mysql_query("SELECT * FROM contact_data,user_data WHERE contact_data.contact_ID= '$data[Contact_ID]'
 and user_data.user_ID='$data[Account_Creator_ID]'");
-$datax=mysql_fetch_assoc($sqlx);
+$datax = mysql_fetch_assoc($sqlx);
+$cdata = mysql_fetch_assoc(mysql_query("SELECT * FROM company_data WHERE company_ID='$data[Company_ID]'")); //lel
 ?>
 <!DOCTYPE html>
 <html>
@@ -150,9 +151,9 @@ $datax=mysql_fetch_assoc($sqlx);
             var name = "<?php echo $datax['Name'] ?>";
             var cost = $('#cost').val();
             var total = $('#total').val();
-            var company = "<?php echo $datax['Company_Name']?>"
+            var company = "<?php echo $cdata['Company_Name']?>"
             var email = "<?php echo $datax['Email']?>";
-            $.post("function_caller.php",{ action: 'quotation', id:aid, name:name,cost:cost, total:total,company:company, email:email},
+            $.post("function_caller.php",{ action: 'invoice', id:aid, name:name,cost:cost, total:total,company:company, email:email},
                 function(result){
 
                     if(result == 1){
@@ -284,7 +285,7 @@ $datax=mysql_fetch_assoc($sqlx);
                     <input type="text" value="'.$datax['Name'].'" class="readonly">
                     <br>
                     <label>Company</label>
-                    <input type="text" value="'.$datax['Company_Name'].'" class="readonly">
+                    <input type="text" value="'.$cdata['Company_Name'].'" class="readonly">
                     <br>
                     <label>Email</label>
                     <input readonly value="'.$datax['Email'].'" class="readonly">
@@ -351,11 +352,7 @@ $datax=mysql_fetch_assoc($sqlx);
 
                     </tr>
                     <tr class="clickable-row" data-href="http://laracast.com/">
-
-
-
                         <td>12/21/2015</td>
-
                         <td>Nashihuddin Bilal</td>
                         <td class="action"><img src="images/Edit-Icon.png"><img src="images/Delete-Icon.png"></td>
                     </tr>
@@ -404,7 +401,7 @@ $datax=mysql_fetch_assoc($sqlx);
                 ?>
                 </tbody>
             </table>
-            <div style="margin-left:366px"><a href="#" class="button">Send Invoice</a><a href="#" class="button">Cancel</a></div><br>
+            <div style="margin-left:366px"><button type="button" id="sendInvoiceButton" class="button">Send Invoice</button><a href="#" class="button">Cancel</a></div><br>
         </div>
     </div>
 </div>
@@ -412,7 +409,7 @@ $datax=mysql_fetch_assoc($sqlx);
 <div id="sendemail" class="overlay">
     <div class="popup">
         <div class="red-header">
-            <h2>Send<span> Email</span></h2>
+            <h2>Send<span>Email</span></h2>
             <a class="close" href="#">&times;</a>
         </div>
         <div class="content-pop">

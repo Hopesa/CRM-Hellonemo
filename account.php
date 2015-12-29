@@ -324,7 +324,7 @@ and user_data.user_ID='$data[Account_Creator_ID]'";
                                     <td>'.$data['Status'].'</td>
                                     <td>'.$data['Value'].'</td>
                                     <td>'.$datax['username'].'</td>
-                                    <td class="action"><a href=account.php?aid='.$data['Account_ID'].'#editAccount><img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                    <td class="action"><a href=account.php?aid='.$data['Account_ID'].'#editAccount><img src="images/Edit-Icon.png"></a><a href=account.php?aid='.$data['Account_ID'].'#confirmdel><img src="images/Delete-Icon.png"</a></td>
                                 </tr>';
                         echo $output;
                     }
@@ -411,19 +411,30 @@ and user_data.user_ID='$data[Account_Creator_ID]'";
 </div>';
     echo $output;
     ?>
-<div id="confirmpop" class="overlay">
-    <div class="popup-small">
-        <div class="red-header">
-            <h2><span>Confirmation</span></h2>
-            <a class="close" href="#">&times;</a>
-        </div>
-        <div class="content-pop">
-            <h3 style="margin-bottom:22px">Are you sure want to follow up this prospect?
-                Status: No Status<center><br><button type="button" class="button" id="ConfirmationButton" style="margin-left:40px">Follow Up</button>
-                    <a href="#" class="button">Cancel</a><br></center></h3>
+    <div id="confirmpop" class="overlay">
+        <div class="popup-small">
+            <div class="red-header">
+                <h2><span>Confirmation</span></h2>
+                <a class="close" href="#">&times;</a>
+            </div>
+            <div class="content-pop">
+                <h3 style="margin-bottom:22px">Are you sure want to add this leads to account? This will delete the leads<center><br><button type="button" class="button" id="ConfirmationButton" style="margin-left:40px">Add to Leads</button>
+                        <a href="#" class="button">Cancel</a><br></center></h3>
+            </div>
         </div>
     </div>
-</div>
+    <div id="confirmdel" class="overlay">
+        <div class="popup-small">
+            <div class="red-header">
+                <h2><span>Confirmation</span></h2>
+                <a class="close" href="#">&times;</a>
+            </div>
+            <div class="content-pop">
+                <h3 style="margin-bottom:22px">Are you sure want to delete this account??<center><br><a class="button" href=delete.php?action=account&id=<?php echo $aid ?> style="margin-left:40px">Yes</a>
+                        <a href="#" class="button">Cancel</a><br></center></h3>
+            </div>
+        </div>
+    </div>
 <script>
 
     jQuery(document).ready(function($) {

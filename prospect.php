@@ -321,7 +321,7 @@ and user_data.user_ID='$data[Prospect_Owner_ID]'";
                                     <td>'.$data['Source'].'</td>
                                     <td>'.$data['Expiration'].'</td>
                                     <td>'.$datax['username'].'</td>
-                                    <td class="action"><a href=prospect.php?pid='.$data['Prospect_ID'].'#editProspect><img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                    <td class="action"><a href=prospect.php?pid='.$data['Prospect_ID'].'#editProspect><img src="images/Edit-Icon.png"></a><a href=prospect.php?pid='.$data['Prospect_ID'].'#confirmdel><img src="images/Delete-Icon.png"</a></td>
                                 </tr>';
                             echo $output;
                         }
@@ -409,6 +409,18 @@ and user_data.user_ID='$data[Prospect_Owner_ID]'";
 </div>';
     echo $output;
     ?>
+    <div id="confirmdel" class="overlay">
+        <div class="popup-small">
+            <div class="red-header">
+                <h2><span>Confirmation</span></h2>
+                <a class="close" href="#">&times;</a>
+            </div>
+            <div class="content-pop">
+                <h3 style="margin-bottom:22px">Are you sure want to delete this prospect??<center><br><a class="button" href=delete.php?action=prospect&id=<?php echo $pid ?> style="margin-left:40px">Yes</a>
+                        <a href="#" class="button">Cancel</a><br></center></h3>
+            </div>
+        </div>
+    </div>
 <script>
 
     jQuery(document).ready(function($) {

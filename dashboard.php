@@ -62,9 +62,9 @@ $uid=$_SESSION['userid'];
     <link rel="stylesheet" href="css/dashboard.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-    <script src="http://cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.js"></script>
+    
+        <script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.js"></script>
 <!--    <script> Graph Failed -->
 <!---->
 <!--        new Chartist.Line('.ct-chart', {-->
@@ -90,6 +90,10 @@ $uid=$_SESSION['userid'];
             $('#addTaskButton').click(function(){
                 addTask();
             });
+            $('#addEventButton').click(function(){
+                addEvent();
+            });
+
 
 
         });
@@ -100,6 +104,33 @@ $uid=$_SESSION['userid'];
             var detail = $('#taskTitle').val();
 
             $.post("function_caller.php",{ action: 'addtask',uid:uid, detail:detail, date:date},
+                function(result){
+
+                    if(result == 1){
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn success-flag" >Task Successfully Added</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                    else{
+                        window.location.href="#";
+                        $('#flag').html('<div class="warn error-flag" >Task Failed to Add</div>');
+                        setTimeout(function(){
+                            $('#flag').html('');
+                        }, 1500);
+                    }
+                });
+        }
+        function addEvent(){
+            
+            var uid = '<?php echo $uid ?>';
+            var date = $('#eventdate').val();
+            var start = $('#eventstart').val();
+            var end = $('#eventend').val();
+            var detail = $('#eventTitle').val();
+
+            $.post("function_caller.php",{ action: 'addevent', uid:uid, detail:detail, date:date, start:start, end:end},
                 function(result){
 
                     if(result == 1){
@@ -234,7 +265,7 @@ $uid=$_SESSION['userid'];
     </div>
     <div class="event">
         <div>
-            <h1>Schedule Events<button>New Event</button><button> Switch to Meetings</button></h1>
+            <h1>Schedule Events<a class="button" href="#addEvent">New Event</a><button> Switch to Meetings</button></h1>
         </div>
         <div class="calendar"></div>
         <div class="panel">
@@ -243,16 +274,24 @@ $uid=$_SESSION['userid'];
                     <tbody>
                     <tr class="panel-heading">
                         <th>Today</th>
-                        <th>Started At</th>
+                        <th>Time for Event</th>
+                        <th>Date</th>
                         <th></th>
                     </tr>
-                    <tr>
-                        <td class="subject">Software Update</td>
-                        <td>
-                            11.00 - 12.00
-                        </td>
-                        <td class="action"><img src="images/Edit-Icon.png"><img src="images/Delete-Icon.png"</td>
-                    </tr>
+                     <?php
+                        $sql=mysql_query("select * from event_data");
+                        while($data=mysql_fetch_array($sql)){
+                            $output ='';
+                            $output.='<tr>
+                                    <td>'.$data['detail'].'</td>
+                                    <td>'.$data['start'].' to '.$data['end'].'</td>
+                                    <td>'.$data['due_date'].'</td>
+                                    <td class="action"><a href="#"<img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                </tr>';
+                            echo $output;
+                        }
+
+                        ?>
 
 
                     </tbody></table></div></div>
@@ -267,9 +306,29 @@ $uid=$_SESSION['userid'];
         <div class="content-pop">
             <form class="contact-form">
                 <div class="column">
-                    <label>Username</label><input type="text" placeholder="Title" id="taskTitle" required><br>
-                    <label>Role</label><input type="datetime-local" placeholder="Due Date" id="taskdue" required><br>
+                    <label>Task Detail</label><input type="text" placeholder="Title" id="taskTitle" required><br>
+                    <label>Due Time</label><input type="datetime-local" placeholder="Due Date" id="taskdue" required><br>
                     <button type="button" class="button" id="addTaskButton">Save</button>
+                    <a class="button" href="#">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+    <div id="addEvent" class="overlay">
+    <div class="popup-small">
+        <div class="red-header">
+            <h2>New<span> Event</span></h2>
+            <a class="close" href="#">&times;</a>
+        </div>
+        <div class="content-pop">
+            <form class="contact-form">
+                <div class="column">
+                    <label>Event Title</label><input type="text" placeholder="Title" id="eventTitle" required><br>
+                    <label>From</label><input type="time" placeholder="Start" id="eventstart" required> To 
+                    <label>Until</label><input type="time" placeholder="Over" id="eventend" required><br>
+                    <label>Date</label><input type="date" placeholder="Due Date" id="eventdate" required>
+                    <button type="button" class="button" id="addEventButton">Save</button>
                     <a class="button" href="#">Cancel</a>
                 </div>
             </form>
@@ -279,3 +338,19 @@ $uid=$_SESSION['userid'];
 </div>
 </body>
 </html>
+<?php
+$current_date = date('d/m/Y H:i:s');
+echo $current_date;
+    $sql = mysql_query("select * from task_data where status = 'unread' or due_date > '$current_date'") or die(mysql_error());
+    $num = mysql_num_rows($sql);
+    if ($num > 0){
+        echo "<p> $num </p>";
+    }
+    while($data=mysql_fetch_array($sql)){
+                            $output ='';
+                            $output.='<tr>
+                                    <td>'.$data['detail'].'</td>
+                                    <td class="action"><a href="#"<img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                </tr>';
+                            echo $output; // this supposed to be on java
+                        }

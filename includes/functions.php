@@ -290,6 +290,15 @@ function addTask($uid, $detail, $date){
     }
     return false;
 }
+
+function addEvent($uid, $detail, $date, $start, $end){
+    $status = 'Pending';
+    $query = mysql_query("INSERT INTO `event_data` (`User_ID`, `detail`,`start`, `end`, `due_date`, `status`) VALUES ('$uid', '$detail', '$start','$end','$date', '$status')");
+    if($query){
+        return true;
+    }
+    return false;
+}
 function sendQuotation($id ,$name ,$projectname, $description, $cost, $total, $email){ //so many html
     $current_date = date('d/m/Y == H:i:s');
     $body = '';
@@ -402,9 +411,9 @@ VALUES ('$id', 'Leads', 'Quotation Sent')";
 function sendInvoice($id ,$name ,$companyname , $email){
     $body = '';
     $total = '';
+    $output = '';
     $sqla=mysql_query("select * from project_data where account_ID = $id and status = 'Done'");
     while($dataa=mysql_fetch_array($sqla)) {
-        $output = '';
         $output .= '<tr>
                                                         <td>' . $dataa['Project_Name'] . '</td>
                                                         <td>' . $dataa['Type'] . '</td>
@@ -420,7 +429,8 @@ function sendInvoice($id ,$name ,$companyname , $email){
                     <th>Type</th>
                     <th>Value</th>
 
-                </tr> '.$output.' <tr><td>Total</td><td></td><td>".$total."</td></tr></tbody></table>';
+                </tr> '.$output.' <tr><td>Total</td><td></td><td>'.$total.'</td></tr></tbody></table>';
+    
     $subject = 'Invoice for '.$companyname.'';
     $to = $email;
     $mail = new PHPMailer;
@@ -442,7 +452,6 @@ function sendInvoice($id ,$name ,$companyname , $email){
         $sqlx = "INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
 VALUES ('$id', 'Acccount', 'Invoice Sent')";
         $queryx = mysql_query($sqlx) or die(mysql_error());
-        return true;
     }
 }
 function CsvExport($table,$filename = 'exported.csv')

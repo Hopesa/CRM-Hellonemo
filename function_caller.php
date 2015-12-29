@@ -158,6 +158,15 @@ else if($action == 'addtask'){
         echo 0;
     }
 }
+
+else if($action == 'addevent'){
+    if(addEvent($_POST['uid'], $_POST['detail'], $_POST['date'], $_POST['start'], $_POST['end'])){
+        echo 1;
+    }
+    else{
+        echo 0;
+    }
+}
 else if($action == 'sendemail') {
     //Move to Functions if you had time
     $type = $_POST['type'];
@@ -223,7 +232,7 @@ else if($action == 'quotation'){
 }
 
 else if($action == 'invoice'){
-    if(sendInvoice($_POST['id'], $_POST['name'], $_POST['companyname'],  $_POST['email'])){
+    if(sendInvoice($_POST['id'], $_POST['name'], $_POST['company'],  $_POST['email'])){
         echo 1;
     }
     else{

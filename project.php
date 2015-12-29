@@ -332,7 +332,7 @@ and user_data.user_ID='$data[Project_Owner_ID]'";
                                     <td>'.$data['Value'].'</td>
                                     <td>'.$data['Expected_Completion'].'</td>
                                     <td>'.$datax['username'].'</td>
-                                    <td class="action"><a href=project.php?prid='.$data['Project_ID'].'#editProject><img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                    <td class="action"><a href=project.php?prid='.$data['Project_ID'].'#editProject><img src="images/Edit-Icon.png"></a><a href=project.php?prid='.$data['Project_ID'].'#confirmdel><img src="images/Delete-Icon.png"</a></td>
                                 </tr>';
                         echo $output;
                     }
@@ -426,6 +426,18 @@ and user_data.user_ID='$data[Project_Owner_ID]'";
         </div>
     </div>
 </div>
+    <div id="confirmdel" class="overlay">
+        <div class="popup-small">
+            <div class="red-header">
+                <h2><span>Confirmation</span></h2>
+                <a class="close" href="#">&times;</a>
+            </div>
+            <div class="content-pop">
+                <h3 style="margin-bottom:22px">Are you sure want to drop this project?<center><br><a class="button" href=delete.php?action=project&id=<?php echo $prid ?> style="margin-left:40px">Yes</a>
+                        <a href="#" class="button">Cancel</a><br></center></h3>
+            </div>
+        </div>
+    </div>
 <script>
 
     jQuery(document).ready(function($) {

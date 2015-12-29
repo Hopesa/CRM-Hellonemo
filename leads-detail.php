@@ -66,7 +66,7 @@ $sqlx = "SELECT * FROM contact_data,user_data WHERE contact_data.contact_ID= '$d
 and user_data.user_ID='$data[Leads_Creator_ID]'";
 $queryx = mysql_query($sqlx) or trigger_error("error" . mysql_error());
 $datax = mysql_fetch_assoc($queryx);
-$cdata = mysql_fetch_assoc(mysql_query("SELECT * FROM company_data WHERE company_ID='$data[Company_ID]'")); //Can this be done?
+$cdata = mysql_fetch_assoc(mysql_query("SELECT * FROM company_data WHERE company_ID='$data[Company_ID]'")); //lel
 ?>
 <!DOCTYPE html>
 <html>
@@ -297,7 +297,9 @@ $cdata = mysql_fetch_assoc(mysql_query("SELECT * FROM company_data WHERE company
                     <br>
                      <label>Expiration Date</label>
                     <input readonly value="'.$data['Expiration'].'" class="readonly">
-
+                     <br>
+                    <br>
+                    <a class="button" href="account.php?lid='.$lid.'#addAccount">Add to Leads</a>
                 </div>
                 <div class="column" style="margin-left:100px; margin-top:35px;"> <
 

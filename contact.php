@@ -305,7 +305,7 @@ if (isset($_GET['cid'])){
                                     <td>'.$data['Telephone'].'</td>
                                     <td>'.$data['Email'].'</td>
                                     <td>'.$data['Status'].'</td>
-                                    <td class="action"><a href=contact.php?cid='.$data['Contact_ID'].'#editContact><img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                    <td class="action"><a href=contact.php?cid='.$data['Contact_ID'].'#editContact><img src="images/Edit-Icon.png"></a><a href=contact.php?cid='.$data['Contact_ID'].'#confirmdel><img src="images/Delete-Icon.png"</a></td>
                                 </tr>';
                         echo $output;
                     }
@@ -413,6 +413,18 @@ echo $output;
         </div>
     </div>
 </div>
+    <div id="confirmdel" class="overlay">
+        <div class="popup-small">
+            <div class="red-header">
+                <h2><span>Confirmation</span></h2>
+                <a class="close" href="#">&times;</a>
+            </div>
+            <div class="content-pop">
+                <h3 style="margin-bottom:22px">Are you sure want to delete this contact??<center><br><a  class="button" href=delete.php?action=contact&id=<?php echo $cid ?> style="margin-left:40px">Yes</a>
+                        <a href="#" class="button">Cancel</a><br></center></h3>
+            </div>
+        </div>
+    </div>
 <script>
     jQuery(document).ready(function($) {
         $(".clickable-row").click(function() {
