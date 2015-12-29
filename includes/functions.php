@@ -390,48 +390,120 @@ VALUES ('$id', 'Leads', 'Quotation Sent')";
         return true;
     }
 }
-function addCase(){
-
-    if ($query) {
-        return true;
-
+function sendInvoice($id ,$name ,$companyname , $email){
+    $body = '';
+    $total = '';
+    $sqla=mysql_query("select * from project_data where account_ID = $id and status = 'Done'");
+    while($dataa=mysql_fetch_array($sqla)) {
+        $output = '';
+        $output .= '<tr>
+                                                        <td>' . $dataa['Project_Name'] . '</td>
+                                                        <td>' . $dataa['Type'] . '</td>
+                                                        <td>' . $dataa['Value'] . '</td>
+                                                        </tr>
+                                                        ';
+        $total = $total + $dataa['Value'];
     }
+    $body .= '<table class="table table-condensed detail-table">
+                <tbody>
+                <tr class="panel-heading">
+                    <th>Project Name</th>
+                    <th>Type</th>
+                    <th>Value</th>
+
+                </tr> '.$output.' <tr><td>Total</td><td></td><td>".$total."</td></tr></tbody></table>';
+    $subject = 'Invoice for '.$companyname.'';
+    $to = $email;
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->SMTPAuth = true;
+    $mail->Host = 'smtp.gmail.com';
+    $mail->Port = 587;
+    $mail->Username = 'dwiasa12@gmail.com'; //Sender Email
+    $mail->Password = 'prakerin123';
+    $mail->setFrom('dwiasa1@gmail.com');
+    $mail->addAddress($to); //Recipient eMail
+    $mail->Subject = $subject;
+    $mail->Body = $body;
+    $mail->SMTPDebug = 0;
+//send the message, check for errors
+    if (!$mail->send()) {
+        echo 0;
+    } else {
+        $sqlx = "INSERT INTO `activity_data` (`Related_ID`, `Type`, `Detail`)
+VALUES ('$id', 'Acccount', 'Invoice Sent')";
+        $queryx = mysql_query($sqlx) or die(mysql_error());
+        return true;
+    }
+}
+function CsvExport($table,$filename = 'exported.csv')
+{
+    $csv_terminated = "\n";
+    $csv_separator = ",";
+    $csv_enclosed = '"';
+    $csv_escaped = "\\";
+    $sql_query = "select * from $table";
+
+    // Gets the data from the database
+    $result = mysql_query($sql_query);
+    $fields_cnt = mysql_num_fields($result);
 
 
-    return false;
+    $schema_insert = '';
+
+    for ($i = 0; $i < $fields_cnt; $i++)
+    {
+        $l = $csv_enclosed . str_replace($csv_enclosed, $csv_escaped . $csv_enclosed,
+                stripslashes(mysql_field_name($result, $i))) . $csv_enclosed;
+        $schema_insert .= $l;
+        $schema_insert .= $csv_separator;
+    } // end for
+
+    $out = trim(substr($schema_insert, 0, -1));
+    $out .= $csv_terminated;
+
+    // Format the data
+    while ($row = mysql_fetch_array($result))
+    {
+        $schema_insert = '';
+        for ($j = 0; $j < $fields_cnt; $j++)
+        {
+            if ($row[$j] == '0' || $row[$j] != '')
+            {
+
+                if ($csv_enclosed == '')
+                {
+                    $schema_insert .= $row[$j];
+                } else
+                {
+                    $schema_insert .= $csv_enclosed .
+                        str_replace($csv_enclosed, $csv_escaped . $csv_enclosed, $row[$j]) . $csv_enclosed;
+                }
+            } else
+            {
+                $schema_insert .= '';
+            }
+
+            if ($j < $fields_cnt - 1)
+            {
+                $schema_insert .= $csv_separator;
+            }
+        } // end for
+
+        $out .= $schema_insert;
+        $out .= $csv_terminated;
+    } // end while
+
+    header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
+    header("Content-Length: " . strlen($out));
+    // Output to browser with appropriate mime type, you choose ;)
+    header("Content-type: text/x-csv");
+    //header("Content-type: text/csv");
+    //header("Content-type: application/csv");
+    header("Content-Disposition: attachment; filename=$filename");
+    echo $out;
+    exit;
 
 }
-function editCase(){
 
-    if ($query) {
-        return true;
-
-    }
-
-
-    return false;
-
-}
-function addSolutions(){
-
-    if ($query) {
-        return true;
-
-    }
-
-
-    return false;
-
-}
-function editSolutions(){
-
-    if ($query) {
-        return true;
-
-    }
-
-
-    return false;
-
-}
 ?>

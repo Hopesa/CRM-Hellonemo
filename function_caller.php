@@ -173,6 +173,8 @@ else if($action == 'sendemail') {
     }
 
     else if($type == 'account'){
+        $queryx = mysql_query('SELECT * from account_data WHERE Contact_ID="'.$data['Contact_ID'].'"') or trigger_error("Query Failed: " . mysql_error());
+        $datax=mysql_fetch_assoc($queryx);
         $id = $datax['Account_ID'];
     }
     else{
@@ -205,6 +207,15 @@ VALUES ('$id','$type', '$_POST[subject]', '$_POST[emailbody]', '$to')";
 }
 else if($action == 'quotation'){
     if(sendQuotation($_POST['id'], $_POST['name'], $_POST['projectname'], $_POST['description'], $_POST['cost'], $_POST['total'], $_POST['email'])){
+        echo 1;
+    }
+    else{
+        echo 0;
+    }
+}
+
+else if($action == 'invoice'){
+    if(sendInvoice($_POST['id'], $_POST['name'], $_POST['companyname'],  $_POST['email'])){
         echo 1;
     }
     else{
@@ -250,6 +261,53 @@ VALUES ('$_POST[id]', 'Prospect', 'Status Changed : Followup 5')");
         echo 1;
     }
 
+}
+else if($action== "exportcsv"){
+//move to function asauc
+if(isset($_POST["Import"])){
+
+
+    echo $filename=$_FILES["file"]["tmp_name"];
+
+
+    if($_FILES["file"]["size"] > 0)
+    {
+
+        $file = fopen($filename, "r");
+        while (($emapData = fgetcsv($file, 10000, ",")) !== FALSE)
+        {
+
+            if ($_POST['type']=='contact') {
+                $sql = "INSERT INTO `crm`.`contact_data` (`Name`, `Telephone`, `Email`, `Company_ID`, `Status`, `Account_Owner_ID`)
+	            	values('$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]',)";
+                //we are using mysql_query function. it returns a resource on true else False on error
+                $result = mysql_query($sql);
+            }
+            if ($_POST['type']=='account') {
+                $sql = "INSERT INTO `crm`.`contact_data` (`Name`, `Telephone`, `Email`, `Company_ID`, `Status`, `Account_Owner_ID`)
+	            	values('$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]',)";
+                //we are using mysql_query function. it returns a resource on true else False on error
+                $result = mysql_query($sql);
+            }
+            if ($_POST['type']=='company') {
+                $sql = "INSERT INTO `crm`.`contact_data` (`Name`, `Telephone`, `Email`, `Company_ID`, `Status`, `Account_Owner_ID`)
+	            	values('$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]',)";
+                //we are using mysql_query function. it returns a resource on true else False on error
+                $result = mysql_query($sql);
+            }
+            if(! $result )
+            {
+                echo 0; //Tell No CSV uplodaded/invalid
+                exit; //stop
+            }
+
+        }
+        fclose($file);
+        //throws a message if data successfully imported to mysql database from excel file
+        echo 1;
+
+    }
+}
 }
 else {
     echo 2;

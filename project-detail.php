@@ -183,7 +183,9 @@ $datax=mysql_fetch_assoc($sqlx);
                     <br>
                      <label>Status</label>
                     <input readonly value="'.$data['Status'].'" class="readonly">
-
+                    <br>
+                    <br>
+                    <a class="button" type="button" id="projectdone">Add to Leads</a>
                 </div>
                 <div class="column" style="margin-left:100px; margin-top:35px;"> <
 

@@ -146,13 +146,13 @@ $datax=mysql_fetch_assoc($sqlx);
                 });
         }
         function sendInvoice(){
-            var id = <?php echo $lid ?>;
+            var aid = <?php echo $aid ?>;
             var name = "<?php echo $datax['Name'] ?>";
             var cost = $('#cost').val();
             var total = $('#total').val();
             var company = "<?php echo $datax['Company_Name']?>"
             var email = "<?php echo $datax['Email']?>";
-            $.post("function_caller.php",{ action: 'quotation', id:id, name:name,cost:cost, total:total,company:company, email:email},
+            $.post("function_caller.php",{ action: 'quotation', id:aid, name:name,cost:cost, total:total,company:company, email:email},
                 function(result){
 
                     if(result == 1){
@@ -265,7 +265,7 @@ $datax=mysql_fetch_assoc($sqlx);
     </ul>
 </div>
 <div class="content col-md-12">
-
+<div id="flag"></div>
     <div class="detail">
         <h1>Account Detail</h1>
         <div class="top">
@@ -408,7 +408,8 @@ $datax=mysql_fetch_assoc($sqlx);
         </div>
     </div>
 </div>
-<div id="email" class="overlay">
+
+<div id="sendemail" class="overlay">
     <div class="popup">
         <div class="red-header">
             <h2>Send<span> Email</span></h2>
@@ -418,10 +419,13 @@ $datax=mysql_fetch_assoc($sqlx);
             <form class="detail-form">
                 <div class="column">
                     <label>To</label>
-                    <input type="text" placeholder="Prospect">
+                    <input type="text" placeholder="Contact Name" id="emailto" value="<?php echo $datax['Name'] ?>">
+                    <br>
+                    <label>Subject Email</label>
+                    <input type="text" placeholder="Subject" id="subject">
                     <br>
                     <label style="margin-top:-340px;">Body</label>
-                    <textarea placeholder="Prospect"></textarea>
+                    <textarea id="emailbody"></textarea>
                     <br>
                     <label>Templates</label>
 
@@ -440,7 +444,7 @@ $datax=mysql_fetch_assoc($sqlx);
                     </div>
                     <div style="margin-top:19px">
                         <a class="button" href="#">Back</a>
-                        <button class="button">Send</button>
+                        <button type="button" class="button" id="sendEmailButton">Send</button>
                     </div>
                 </div>
             </form>
