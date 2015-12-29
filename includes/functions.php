@@ -281,6 +281,15 @@ function addTemplate($name, $subject, $body){
     }
     return false;
 }
+
+function addTask($uid, $detail, $date){
+    $status = 'Pending';
+    $query = mysql_query("INSERT INTO `task_data` (`User_ID`, `detail`, `due_date`, `status`) VALUES ('$uid', '$detail', '$date', '$status')");
+    if($query){
+        return true;
+    }
+    return false;
+}
 function sendQuotation($id ,$name ,$projectname, $description, $cost, $total, $email){ //so many html
     $current_date = date('d/m/Y == H:i:s');
     $body = '';
@@ -445,7 +454,7 @@ function CsvExport($table,$filename = 'exported.csv')
     $sql_query = "select * from $table";
 
     // Gets the data from the database
-    $result = mysql_query($sql_query);
+    $result = mysql_query($sql_query) or die(mysql_error());
     $fields_cnt = mysql_num_fields($result);
 
 
@@ -502,7 +511,7 @@ function CsvExport($table,$filename = 'exported.csv')
     //header("Content-type: application/csv");
     header("Content-Disposition: attachment; filename=$filename");
     echo $out;
-    exit;
+    return $out;
 
 }
 

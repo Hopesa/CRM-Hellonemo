@@ -53,12 +53,14 @@ if (!loggedIn()){
 </html>';
     exit;
 }
-$search='Null';
-if (isset($_GET['search'])){
-    $search = $_GET['search'];
+$table='';
+if (isset($_GET['table'])){
+    $table = $_GET['table'];
+    $table="contact_data"; // this is the tablename to export to csv from mysql.
+    CsvExport($table);
 }
-
 ?>
+
     <html>
 
     <head>
@@ -130,6 +132,9 @@ if (isset($_GET['search'])){
                 $('#saveTemplateButton').click(function(){
                     add_template();
                 });
+                $('#exportButton').click(function(){
+                    exportCsv();
+                });
 
             });
             function confirmation(){
@@ -189,6 +194,50 @@ if (isset($_GET['search'])){
                             window.location.href="#";
                             $('#flag').html('<div class="warn error-flag" >Template Failed to Add</div>');
                             setTimeout(function(){
+                                $('#flag').html('');
+                            }, 1500);
+                        }
+                    });
+            }
+
+            function exportCsv() {
+                var table = 'contact_data';
+
+                $.post("setting.php", {tableexport: table},
+                    function (result) {
+
+                        if (result == 1) {
+                            $('#flag').html('<div class="warn success-flag" >Success</div>');
+                            setTimeout(function () {
+                                $('#flag').html('');
+                            }, 1500);
+                        }
+                        else {
+                            window.location.href = "#";
+                            $('#flag').html('<div class="warn error-flag" >Fail</div>');
+                            setTimeout(function () {
+                                $('#flag').html('');
+                            }, 1500);
+                        }
+                    });
+            }
+            function importCsv() {
+                var table = 'contact_data';
+
+                $.post("function_caller.php", {action: 'importcsv', table: table},
+                    function (result) {
+
+                        if (result == 1) {
+                            window.location.href = "#";
+                            $('#flag').html('<div class="warn success-flag" >Success</div>');
+                            setTimeout(function () {
+                                $('#flag').html('');
+                            }, 1500);
+                        }
+                        else {
+                            window.location.href = "#";
+                            $('#flag').html('<div class="warn error-flag" >Fail</div>');
+                            setTimeout(function () {
                                 $('#flag').html('');
                             }, 1500);
                         }
@@ -350,8 +399,7 @@ if (isset($_GET['search'])){
                         </table>
                     </div>
                             <!-- Pop Ups-->
-
-        <div id="addUser" class="overlay">
+                    <div id="addUser" class="overlay">
             <div id="flag-confirmation"></div>
                 <div class="popup-small">
                     <div class="red-header">
@@ -615,11 +663,42 @@ if (isset($_GET['search'])){
                     <div class="tools contact-box col-md-7">
                         <h1>Tools</h1>
                         <div>
-                            <a class="square red-link"><img src="images/icon-prospect.png"><br>Import Account/Contact</a>
-                            <a class="square green-link"><img src="images/icon-prospect.png"><br>Import Leads/Prospect</a>
-                            <a class="square yellow-link"><img src="images/icon-userefresh.png"><br>Export Data</a>
+                            <a class="square red-link" href="#confirmimport"><img src="images/icon-prospect.png"><br>Import Account/Contact</a>
+                            <a class="square green-link" href="#confirmimport"><img src="images/icon-prospect.png"><br>Import Leads/Prospect</a>
+                            <a type="button" class="square yellow-link" href="setting.php?table='contact_data'"><img src="images/icon-userefresh.png"><br>Export Data</a>
                             <a class="square blue-link"><img src="images/icon-trash.png"><br>Mass Delete Specific Record</a>
                             <a class="square purple-link"><img src="images/icon-trash.png"><br>Mass Delete Data</a>
+                        </div>
+                    </div>
+                    <div id="confirmimport" class="overlay">
+                        <div class="popup-small">
+                            <div class="red-header">
+                                <h2><span>Confirmation</span></h2>
+                                <a class="close" href="#">&times;</a>
+                            </div>
+                            <div class="content-pop">
+                                <form class="form-horizontal well" action="function_caller.php" method="post" name="upload_excel" enctype="multipart/form-data">
+                                    <fieldset>
+                                        <legend>Import CSV/Excel file</legend>
+                                        <div class="control-group">
+                                            <div class="control-label">
+                                                <label>CSV/Excel File:</label>
+                                            </div>
+                                            <div class="controls">
+                                                <input type="text" name="type" id="type" class="input" placeholder="type">
+                                                <input type="file" name="file" id="file" class="input-large">
+                                                <input hidden type="text" name="action" value="importcsv">
+                                            </div>
+                                        </div>
+
+                                        <div class="control-group">
+                                            <div class="controls">
+                                                <button type="submit" id="submit" name="Import" class="btn btn-primary button-loading" data-loading-text="Loading...">Upload</button>
+                                            </div>
+                                        </div>
+                                    </fieldset>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

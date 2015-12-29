@@ -150,6 +150,14 @@ else if($action == 'addtemplate'){
         echo 0;
     }
 }
+else if($action == 'addtask'){
+    if(addTask($_POST['uid'], $_POST['detail'], $_POST['date'])){
+        echo 1;
+    }
+    else{
+        echo 0;
+    }
+}
 else if($action == 'sendemail') {
     //Move to Functions if you had time
     $type = $_POST['type'];
@@ -262,7 +270,7 @@ VALUES ('$_POST[id]', 'Prospect', 'Status Changed : Followup 5')");
     }
 
 }
-else if($action== "exportcsv"){
+else if($action == "importcsv"){
 //move to function asauc
 if(isset($_POST["Import"])){
 
@@ -278,8 +286,8 @@ if(isset($_POST["Import"])){
         {
 
             if ($_POST['type']=='contact') {
-                $sql = "INSERT INTO `crm`.`contact_data` (`Name`, `Telephone`, `Email`, `Company_ID`, `Status`, `Account_Owner_ID`)
-	            	values('$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]',)";
+                $sql = "INSERT INTO `contact_data` (`Contact_ID`, `Name`, `Telephone`, `Email`, `Company_ID`, `Status`, `Case_ID`, `Account_Owner_ID`)
+	            	values('$emapData[0]','$emapData[1]','$emapData[2]','$emapData[3]','$emapData[4]','$emapData[5]','$emapData[6]','$emapData[7]')";
                 //we are using mysql_query function. it returns a resource on true else False on error
                 $result = mysql_query($sql);
             }
@@ -307,7 +315,15 @@ if(isset($_POST["Import"])){
         echo 1;
 
     }
+    }
 }
+else if ($action == 'exportcsv'){
+    if(CsvExport($_POST['table'])){
+        echo 1;
+    }
+    else {
+        echo 0;
+    }
 }
 else {
     echo 2;
