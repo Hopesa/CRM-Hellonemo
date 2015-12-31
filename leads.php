@@ -76,15 +76,32 @@ if (isset($cid)){
 ?>
 <html>
 <head>
-
+	<title>CRM | Leads</title>
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/contact.css">
     <link rel="stylesheet prefetch" href="http://fian.my.id/marka/static/marka/css/marka.css">
     <link rel="stylesheet" href="css/filter.css">
+	<!-- favicon -->
+	<link rel="apple-touch-icon" sizes="57x57" href="images/favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="images/favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="images/favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="images/favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="images/favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="images/favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="images/favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+	<link rel="manifest" href="images/favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="images/favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	<!-- end of favicon -->
     <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="http://fian.my.id/marka/static/marka/js/marka.js"></script>
-    <script src="js/filter.js"></script>
     <script src="js/bootstrap.js"></script>
     <script>
         $(document).ready(function() {
@@ -144,6 +161,7 @@ if (isset($cid)){
                         setTimeout(function(){
                             $('#flag').html('');
                         }, 1500);
+                        reload();
                     }
                     else if(result == 2){
                         window.location.href="#";
@@ -176,6 +194,7 @@ if (isset($cid)){
                         setTimeout(function(){
                             $('#flag').html('');
                         }, 1500);
+                        reload();
                     }
                     else if(result == 2){
                         window.location.href="#";
@@ -200,30 +219,112 @@ if (isset($cid)){
                 $('#flag').html('');
             }, 1500);
         }
+       
     </script>
-    <style>
-        body{
-            display: block;
-            background-color: #f7f7f7;
-            padding: 0;
-        }
-    </style>
+ <script type="text/javascript">
+	
+	var originalNotifClasses;
+	function toggleNotif() {
+    var elem = document.getElementById('popupnotif');
+    var classes = elem.className;
+    if (originalNotifClasses === undefined) {
+        originalNotifClasses = classes;
+    }
+    elem.className = /expanded/.test(classes) ? originalNotifClasses : originalNotifClasses + ' expanded';
+}
+</script>
+<script type="text/javascript">
+	
+	var originalNavClasses;
+	function toggleNav() {
+    var elem = document.getElementById('menu');
+    var classes = elem.className;
+    if (originalNavClasses === undefined) {
+        originalNavClasses = classes;
+    }
+    elem.className = /expanded/.test(classes) ? originalNavClasses : originalNavClasses + ' expanded';
+}
+</script>
 </head>
 <body>
 
 <div class="topbar">
+    <?php
+    //notifications
+    $current_date = date('d/m/Y H:i:s');
+$sqlnotif = mysql_query("select * from task_data where due_date < '$current_date' and status != 'read' and status !='done'") or die(mysql_error());
+$num = mysql_num_rows($sqlnotif);
+$sqln = mysql_query("select * from task_data where status ='read'") or die(mysql_error());
+while($datan=mysql_fetch_array($sqln)){
+    $output ='';
+    $output.='<tr>
+                                    <td>'.$datan['detail'].'</td>
+                                    <td class="action"><a href="#"<img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                </tr>';
+}
+if(isset($_GET['nact'])){
+    $notifact = $_GET['nact']; //Get action for notif
+    $nid = $_GET['nid'];
+    $sql = mysql_query("update task_data where id = $nid SET ") or die(mysql_error());
+}
+            ?>
     <img class="logo" src="images/hellonemo-logo-small.png">
+	<a href="#footer_nav" onclick="toggleNav(); return false;"><img class="menu_button" src="images/menu.png"></a>
+	<div class="notif">
+            <img src="images/icon1.png">
+            <img src="images/icon2.png">
+            <a href="#footer_nav" onclick="toggleNotif(); return false;"><?php if($num > 0) {echo'<img src="images/icon3-red.png">';} else {echo '<img src="images/icon3.png">';} ?></a></a>
+			<div class="container_popup">
+<div class="arrow_up"></div>
+<div class="popupnotif" id="popupnotif">
+<div class="popup_count">You have <?php echo $num ?> unread notifications</div>
+<table border-spacing=0>
+
+
+            <?php
+            while($datanotif=mysql_fetch_array($sqlnotif)){
+                $output ='';
+                $output.='
+<tr>
+		<td class="popup_img">
+		<img src="images/notif/notif1.png" />
+		</td>
+                <td class="popup_desc">
+        '.$datanotif['detail'].'
+		</td>
+		<td>
+		<div class="popup_day">Unread</div>
+		</td>
+	</tr>';
+                echo $output; // echo the unreads
+            }
+            $sqln = mysql_query("select * from task_data where status ='read'") or die(mysql_error());
+            while($datan=mysql_fetch_array($sqln)) {
+                $output ='';
+                $output.='
+<tr>
+		<td class="popup_img">
+		<img src="images/notif/notif1.png" />
+		</td>
+                <td class="popup_desc">
+        '.$datan['detail'].'
+		</td>
+		<td>
+		<div class="popup_day">Read</div>
+		</td>
+	</tr>';
+                echo $output; // echo the unreads
+            }
+            ?>
+</table>
+</div>
+</div>
+            <img src="images/gears.png">
+        </div>
     <div class="search"><form>
             <input type="text" placeholder="search">
         </form>
         <img src="images/search.png">
-    </div>
-
-    <div class="notif">
-        <img src="images/icon1.png">
-        <img src="images/icon2.png">
-        <img src="images/icon3.png">
-        <img src="images/gears.png">
     </div>
 
 </div>
@@ -232,62 +333,83 @@ if (isset($cid)){
         <center><p>Nashihuddin</p></center>
         <center><button>Logout</button></center>
     </div>
-    <ul class="sidebar-menu">
+<ul class="sidebar-menu">
         <li>
-            <a href="">
+            <a href="dashboard.php">
                 <img src="images/Forma-1.png"> <span>Dashboard</span>
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="contact.php">
                 <img src="images/Forma-2.png"> <span>Contacts</span>
             </a>
         </li>
         <li class="active">
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Leads</span>
+            <a href="leads.php">
+                <img src="images/Forma-3.png"> <span>Leads</span>
             </a>
         </li>
 
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Prospects</span>
+            <a href="prospect.php">
+                <img src="images/Forma-4.png"> <span>Prospects</span>
             </a>
         </li>
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Accounts</span>
+            <a href="account.php">
+                <img src="images/Forma-5.png"> <span>Accounts</span>
             </a>
         </li>
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Projects</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Reports</span>
+            <a href="project.php">
+                <img src="images/Forma-6.png"> <span>Projects</span>
             </a>
         </li>
     </ul>
 </div>
+	<ul class="mobile-menu" id="menu">
+		<div class="search2">
+            <form>
+                <input type="text" placeholder="search">
+				<img src="images/search.png">
+            </form>
+        </div>
+		<li>
+            <a href="dashboard.php">
+                <img src="images/Forma-1.png"> <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="contact.php">
+                <img src="images/Forma-2.png"> <span>Contacts</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="leads.php">
+                <img src="images/Forma-3.png"> <span>Leads</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="prospect.php">
+                <img src="images/Forma-4.png"> <span>Prospects</span>
+            </a>
+        </li>
+        <li>
+            <a href="account.php">
+                <img src="images/Forma-5.png"> <span>Accounts</span>
+            </a>
+        </li>
+        <li>
+            <a href="project.php">
+                <img src="images/Forma-6.png"> <span>Projects</span>
+            </a>
+        </li>
+        </ul>
 <div class="content col-md-12">
     <div id="flag"></div>
     <div class="contact">
         <h1>Leads</h1>
-        <div class="filter">
-            <div class="button-group">
-                <i id="icon"></i>
-                <a id="input" href="">Filter</a>
-                <ul id="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else </a></li>
-                    <li><a href="#">Account Settings</a></li>
-                    <li><a href="#">Help and Feedback</a></li>
-                </ul>
-            </div>
-        </div>
         <div class="top"><a class="button" href="#addLeads">New Lead</a>
         </div>
         <div class="panel">
@@ -298,11 +420,11 @@ if (isset($cid)){
                         <th>Name</th>
                         <th>Company</th>
                         <th>Status</th>
-                        <th>Value</th>
-                        <th>Source</th>
-                        <th>Expiration Date</th>
-                        <th>Created By</th>
-                        <th>Action</th>
+                        <th class="hide2">Value</th>
+                        <th class="hide1">Source</th>
+                        <th class="hide1">Expiration Date</th>
+                        <th class="hide1">Created By</th>
+                        <th class="hide2">Action</th>
                     </tr>
 <!--                    <tr class="clickable-row" data-href="http://laracast.com/">-->
 <!--                        <td>Ashlyn Twombly</td>-->
@@ -324,15 +446,15 @@ if (isset($cid)){
 and user_data.user_ID='$data[Leads_Creator_ID]'";
                         $queryx = mysql_query($sqlx) or trigger_error("error" . mysql_error());
                         $datax = mysql_fetch_assoc($queryx);
-                        $output.='<tr class="" data-href="contact-detail.php?id='.$data['Leads_ID'].'">
-                                    <td>'.$datax['Name'].'</td>
-                                    <td>'.$datax['Company_Name'].'</td>
-                                    <td>'.$data['Status'].'</td>
-                                    <td>'.$data['Estimated_Value'].'</td>
-                                    <td>'.$data['Source'].'</td>
-                                    <td>'.$data['Expiration'].'</td>
-                                    <td>'.$datax['username'].'</td>
-                                    <td class="action"><a href=leads.php?lid='.$data['Leads_ID'].'#editLeads><img src="images/Edit-Icon.png"></a><a href=leads.php?lid='.$data['Leads_ID'].'#confirmdel><img src="images/Delete-Icon.png"</a></td>
+                        $output.='<tr>
+                                    <td class="clickable-row" data-href="leads-detail.php?lid='.$data['Leads_ID'].'">'.$datax['Name'].'</td>
+                                    <td class="clickable-row" data-href="leads-detail.php?lid='.$data['Leads_ID'].'">'.$datax['Company_Name'].'</td>
+                                    <td class="clickable-row" data-href="leads-detail.php?lid='.$data['Leads_ID'].'">'.$data['Status'].'</td>
+                                    <td class="clickable-row hide2" data-href="leads-detail.php?lid='.$data['Leads_ID'].'">'.$data['Estimated_Value'].'</td>
+                                    <td class="clickable-row hide1" data-href="leads-detail.php?lid='.$data['Leads_ID'].'">'.$data['Source'].'</td>
+                                    <td class="clickable-row hide1" data-href="leads-detail.php?lid='.$data['Leads_ID'].'">'.$data['Expiration'].'</td>
+                                    <td class="clickable-row hide1" data-href="leads-detail.php?lid='.$data['Leads_ID'].'">'.$datax['username'].'</td>
+                                    <td class="action hide2"><a href=leads.php?lid='.$data['Leads_ID'].'#editLeads><img src="images/Edit-Icon.png"></a><a href=leads.php?lid='.$data['Contact_ID'].'#confirmdel><img src="images/Delete-Icon.png"</a></td>
                                 </tr>';
                         echo $output;
                     }
@@ -348,13 +470,6 @@ and user_data.user_ID='$data[Leads_Creator_ID]'";
                 <a class="square red-link"><img src="images/icon-prospect.png"><br>Import Prospects</a>
                 <a class="square green-link"><img src="images/icon-trash.png"><br>Mass Delete Prospect</a>
                 <a class="square yellow-link" style="padding-top:20px;"><img src="images/icon-message.png"><br>Mass Email Leads</a>
-            </div>
-        </div>
-        <div class="reports col-md-6 contact-box">
-            <h1>Reports</h1>
-            <div>
-                <a class="square red-link"><img src="images/24-clock.png"><br>Mass Email Contact</a>
-                <a class="square green-link"><img src="images/monophone.png"><br>Email Status</a>
             </div>
         </div>
     </div>
@@ -392,7 +507,8 @@ and user_data.user_ID='$data[Leads_Creator_ID]'";
             <a class="close" href="#">&times;</a>
         </div>
         <div class="content-pop">
-            <h3 style="margin-bottom:22px">Are you sure want to add this prospect to leads? This will delete the prospect<center><br><button type="button" class="button" id="ConfirmationButton" style="margin-left:40px">Add to Leads</button>
+            <h3 style="margin-bottom:22px">Are you sure want to follow up this prospect?
+                Status: No Status<center><br><button type="button" class="button" id="ConfirmationButton" style="margin-left:40px">Follow Up</button>
                     <a href="#" class="button">Cancel</a><br></center></h3>
         </div>
     </div>
@@ -436,7 +552,7 @@ and user_data.user_ID='$data[Leads_Creator_ID]'";
                 <a class="close" href="#">&times;</a>
             </div>
             <div class="content-pop">
-                <h3 style="margin-bottom:22px">Are you sure want to delete this Leads??<center><br><a class="button" href=delete.php?action=leads&id=<?php echo $lid ?> style="margin-left:40px">Yes</a>
+                <h3 style="margin-bottom:22px">Are you sure want to delete this leads??<center><br><a  class="button" href=delete.php?action=leads&id=<?php echo $lid ?> style="margin-left:40px">Yes</a>
                         <a href="#" class="button">Cancel</a><br></center></h3>
             </div>
         </div>

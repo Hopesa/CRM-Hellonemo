@@ -43,8 +43,8 @@ $sOutput .= '<div id="index-body">';
 if (loggedIn()) {
     $sOutput .= '<html><script>
            window.alert("' . $_SESSION["username"] . ' Anda Sudah Login")
-           window.location.href="index.php";
        </SCRIPT></html>';
+    echo $sOutput;
 }elseif (!isset($_GET['action'])) {
     // incase there was an error
     // see if we have a previous username
@@ -60,5 +60,6 @@ if (loggedIn()) {
 }
 $sOutput .= '</div>';
 // lets display our output string.
-echo $sOutput;
+sleep(2);
+header('location:/crm-native/dashboard.php');
 ?>

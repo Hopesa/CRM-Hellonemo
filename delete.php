@@ -7,6 +7,7 @@ if ($action == 'company'){
     $query = mysql_query('DELETE FROM company_data WHERE Company_ID = "'.$id.'"') or die (mysql_error());
     if($query){
         echo 1;
+        header('location:company.php');
     }else{
         echo 0;
     }
@@ -16,6 +17,7 @@ if ($action == 'contact'){
     $query = mysql_query('DELETE FROM contact_data WHERE Contact_ID = "'.$id.'"') or die (mysql_error());
     if($query){
         echo 1;
+        header('location:contact.php');
     }else{
         echo 0;
     }
@@ -24,6 +26,7 @@ if ($action == 'prospect'){
     $query = mysql_query('DELETE FROM prospect_data WHERE Prospect_ID = "'.$id.'"') or die (mysql_error());
     if($query){
         echo 1;
+        header('location:prospect.php');
     }else{
         echo 0;
     }
@@ -33,6 +36,7 @@ if ($action == 'leads'){
     $query = mysql_query('DELETE FROM leads_data WHERE Leads_ID = "'.$id.'"') or die (mysql_error());
     if($query){
         echo 1;
+        header('location:leads.php');
     }else{
         echo 0;
     }
@@ -41,6 +45,7 @@ if ($action == 'account'){
     $query = mysql_query('DELETE FROM account_data WHERE Account_ID = "'.$id.'"') or die (mysql_error());
     if($query){
         echo 1;
+        header('location:account.php');
     }else{
         echo 0;
     }
@@ -49,6 +54,7 @@ if ($action == 'project'){
     $query = mysql_query('DELETE FROM project_data WHERE Project_ID = "'.$id.'"') or die (mysql_error());
     if($query){
         echo 1;
+        header('location:project.php');
     }else{
         echo 0;
     }

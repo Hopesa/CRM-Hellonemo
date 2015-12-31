@@ -182,72 +182,148 @@ $datax = mysql_fetch_assoc($queryx);
             background-color: #f7f7f7;
             padding: 0;
         }
-    </style>
+    </style><script type="text/javascript">
+	
+	var originalNotifClasses;
+	function toggleNotif() {
+    var elem = document.getElementById('popupnotif');
+    var classes = elem.className;
+    if (originalNotifClasses === undefined) {
+        originalNotifClasses = classes;
+    }
+    elem.className = /expanded/.test(classes) ? originalNotifClasses : originalNotifClasses + ' expanded';
+}
+</script>
+<script type="text/javascript">
+	
+	var originalNavClasses;
+	function toggleNav() {
+    var elem = document.getElementById('menu');
+    var classes = elem.className;
+    if (originalNavClasses === undefined) {
+        originalNavClasses = classes;
+    }
+    elem.className = /expanded/.test(classes) ? originalNavClasses : originalNavClasses + ' expanded';
+}
+</script>
 </head>
-
 <body>
 
 <div class="topbar">
+    <?php
+    //notifications
+    $current_date = date('d/m/Y H:i:s');
+$sqlnotif = mysql_query("select * from task_data where due_date < '$current_date' and status != 'read' and status !='done'") or die(mysql_error());
+$num = mysql_num_rows($sqlnotif);
+$sqln = mysql_query("select * from task_data where status ='read'") or die(mysql_error());
+while($datan=mysql_fetch_array($sqln)){
+    $output ='';
+    $output.='<tr>
+                                    <td>'.$datan['detail'].'</td>
+                                    <td class="action"><a href="#"<img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                </tr>';
+}
+if(isset($_GET['nact'])){
+    $notifact = $_GET['nact']; //Get action for notif
+    $nid = $_GET['nid'];
+    $sql = mysql_query("update task_data where id = $nid SET ") or die(mysql_error());
+}
+            ?>
     <img class="logo" src="images/hellonemo-logo-small.png">
-    <div class="search">
-        <form>
+	<a href="#footer_nav" onclick="toggleNav(); return false;"><img class="menu_button" src="images/menu.png"></a>
+	<div class="notif">
+            <img src="images/icon1.png">
+            <img src="images/icon2.png">
+            <a href="#footer_nav" onclick="toggleNotif(); return false;"><?php if($num > 0) {echo'<img src="images/icon3-red.png">';} else {echo '<img src="images/icon3.png">';} ?></a></a>
+			<div class="container_popup">
+<div class="arrow_up"></div>
+<div class="popupnotif" id="popupnotif">
+<div class="popup_count">You have <?php echo $num ?> unread notifications</div>
+<table border-spacing=0>
+
+
+            <?php
+            while($datanotif=mysql_fetch_array($sqlnotif)){
+                $output ='';
+                $output.='
+<tr>
+		<td class="popup_img">
+		<img src="images/notif/notif1.png" />
+		</td>
+                <td class="popup_desc">
+        '.$datanotif['detail'].'
+		</td>
+		<td>
+		<div class="popup_day">Unread</div>
+		</td>
+	</tr>';
+                echo $output; // echo the unreads
+            }
+            $sqln = mysql_query("select * from task_data where status ='read'") or die(mysql_error());
+            while($datan=mysql_fetch_array($sqln)) {
+                $output ='';
+                $output.='
+<tr>
+		<td class="popup_img">
+		<img src="images/notif/notif1.png" />
+		</td>
+                <td class="popup_desc">
+        '.$datan['detail'].'
+		</td>
+		<td>
+		<div class="popup_day">Read</div>
+		</td>
+	</tr>';
+                echo $output; // echo the unreads
+            }
+            ?>
+</table>
+</div>
+</div>
+            <img src="images/gears.png">
+        </div>
+    <div class="search"><form>
             <input type="text" placeholder="search">
         </form>
         <img src="images/search.png">
     </div>
 
-    <div class="notif">
-        <img src="images/icon1.png">
-        <img src="images/icon2.png">
-        <img src="images/icon3.png">
-        <img src="images/gears.png">
-    </div>
-
 </div>
 <div class="sidebar">
     <div class="pic"><img src="images/t_2P7AtX.png">
-        <center>
-            <p>Nashihuddin</p>
-        </center>
-        <center>
-            <button>Logout</button>
-        </center>
+        <center><p>Nashihuddin</p></center>
+        <center><button>Logout</button></center>
     </div>
     <ul class="sidebar-menu">
-        <li class="active">
-            <a href="">
+        <li>
+			<a href="dashboard.php">
                 <img src="images/Forma-1.png"> <span>Dashboard</span>
             </a>
         </li>
         <li>
-            <a href="">
+            <a href="contact.php">
                 <img src="images/Forma-2.png"> <span>Contacts</span>
             </a>
         </li>
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Leads</span>
+            <a href="leads.php">
+                <img src="images/Forma-3.png"> <span>Leads</span>
             </a>
         </li>
 
-        <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Prospects</span>
+        <li class="active">
+            <a href="prospect.php">
+                <img src="images/Forma-4.png"> <span>Prospects</span>
             </a>
         </li>
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Accounts</span>
+            <a href="account.php">
+                <img src="images/Forma-5.png"> <span>Accounts</span>
             </a>
         </li>
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Projects</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Reports</span>
+            <a href="project.php">
+                <img src="images/Forma-6.png"> <span>Projects</span>
             </a>
         </li>
     </ul>
@@ -269,10 +345,10 @@ $datax = mysql_fetch_assoc($queryx);
                 $output ='';
                 $output.='<div class="column" style="margin-left:35px; margin-top: 35px;">
                     <label>Name</label>
-                    <input type="text" value="'.$datax['Name'].'" class="readonly">
+                    <input readonly type="text" value="'.$datax['Name'].'" class="readonly">
                     <br>
                     <label>Company</label>
-                    <input type="text" value="'.$datax['Company_Name'].'" class="readonly">
+                    <input readonly type="text" value="'.$datax['Company_Name'].'" class="readonly">
                     <br>
                     <label>Status</label>
                     <input readonly value="'.$data['Status'].'" class="readonly">
@@ -286,10 +362,10 @@ $datax = mysql_fetch_assoc($queryx);
                 </div>
                 <div class="column" style="margin-left:100px; margin-top:35px;">
                     <label>Soutce</label>
-                    <input type="text" value="'.$data['Source'].'" class="readonly">
+                    <input readonly type="text" value="'.$data['Source'].'" class="readonly">
                     <br>
                     <label>Owner</label>
-                    <input type="text" value="'.$datax['username'].'" class="readonly">
+                    <input readonly type="text" value="'.$datax['username'].'" class="readonly">
                 </div>';
                 echo $output;
 

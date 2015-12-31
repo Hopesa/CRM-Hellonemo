@@ -42,7 +42,7 @@ if (loggedIn()) {
     <body>
         <div class="container">
             <div class="content">
-                <div class="title">Dashboard</div>
+                <div class="title"><a href="dashboard.php">Dashboard</a></div>
             </div>
         </div>
     </body>

@@ -265,18 +265,18 @@ if (isset($_GET['table'])){
 
         <div class="topbar">
             <img class="logo" src="images/hellonemo-logo-small.png">
+			<a href="#footer_nav" onclick="toggleNav(); return false;"><img class="menu_button" src="images/menu.png"></a>
+			<div class="notif">
+                <img src="images/icon1.png">
+                <img src="images/icon2.png">
+                <img src="images/icon3.png">
+                <img src="images/gears.png">
+            </div>
             <div class="search">
                 <form>
                     <input type="text" placeholder="search">
                 </form>
                 <img src="images/search.png">
-            </div>
-
-            <div class="notif">
-                <img src="images/icon1.png">
-                <img src="images/icon2.png">
-                <img src="images/icon3.png">
-                <img src="images/gears.png">
             </div>
 
         </div>
@@ -289,44 +289,39 @@ if (isset($_GET['table'])){
                     <button>Logout</button>
                 </center>
             </div>
-            <ul class="sidebar-menu">
-                <li class="active">
-                    <a href="">
-                        <img src="images/Forma-1.png"> <span>Dashboard</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <img src="images/Forma-2.png"> <span>Contacts</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <img src="images/Forma-2.png"> <span>Leads</span>
-                    </a>
-                </li>
+     <ul class="sidebar-menu">
+        <li>
+            <a href="dashboard.php">
+                <img src="images/Forma-1.png"> <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="contact.php">
+                <img src="images/Forma-2.png"> <span>Contacts</span>
+            </a>
+        </li>
+        <li>
+            <a href="leads.php">
+                <img src="images/Forma-3.png"> <span>Leads</span>
+            </a>
+        </li>
 
-                <li class="active">
-                    <a href="">
-                        <img src="images/Forma-2.png"> <span>Prospects</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <img src="images/Forma-2.png"> <span>Accounts</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <img src="images/Forma-2.png"> <span>Projects</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="">
-                        <img src="images/Forma-2.png"> <span>Reports</span>
-                    </a>
-                </li>
-            </ul>
+        <li>
+            <a href="prospect.php">
+                <img src="images/Forma-4.png"> <span>Prospects</span>
+            </a>
+        </li>
+        <li>
+            <a href="account.php">
+                <img src="images/Forma-5.png"> <span>Accounts</span>
+            </a>
+        </li>
+        <li>
+            <a href="project.php">
+                <img src="images/Forma-6.png"> <span>Projects</span>
+            </a>
+        </li>
+    </ul>
         </div>
         <div class="content col-md-12">
             <div class="contact">

@@ -71,6 +71,14 @@ if ($action == 'account'){
         echo 0;
     }
 }
+if ($action == 'projectdone'){
+    $id = $_POST['id'];
+    $query = mysql_query("UPDATE `project_data` SET `Status` = 'Done' WHERE `project_data`.`Project_ID` = $id");
+    if ($query){
+        echo 1;
+    }
+    else 0;
+}
 if(empty($action)){
     echo 0;
 }

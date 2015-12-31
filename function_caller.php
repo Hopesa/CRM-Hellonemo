@@ -200,6 +200,8 @@ else if($action == 'sendemail') {
         $to = $data['Email'];
         $mail = new PHPMailer;
         $mail->isSMTP();
+    
+    $mail->IsHTML(true);
         $mail->SMTPAuth = true;
         $mail->Host = 'smtp.gmail.com';
         $mail->Port = 587;
@@ -215,8 +217,9 @@ else if($action == 'sendemail') {
             echo 0;
             echo $sql;
         } else {
+            $emailbody = mysql_escape_string($_POST[emailbody])
             $sqlx = "INSERT INTO `email_history` (`Related_ID`, `Type`, `Subject`, `Body`, `Email`)
-VALUES ('$id','$type', '$_POST[subject]', '$_POST[emailbody]', '$to')";
+VALUES ('$id','$type', '$_POST[subject]', '$emailbody', '$to')";
             $queryx = mysql_query($sqlx);
             echo 1;
         }

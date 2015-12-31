@@ -4,14 +4,11 @@ if (!loggedIn()){
 <html>
     <head>
         <title>Index</title>
-
         <link href="https://fonts.googleapis.com/css?family=Lato:100" rel="stylesheet" type="text/css">
-
         <style>
             html, body {
                 height: 100%;
             }
-
             body {
                 margin: 0;
                 padding: 0;
@@ -20,18 +17,15 @@ if (!loggedIn()){
                 font-weight: 300;
                 font-family: "Lato";
             }
-
             .container {
                 text-align: center;
                 display: table-cell;
                 vertical-align: middle;
             }
-
             .content {
                 text-align: center;
                 display: inline-block;
             }
-
             .title {
                 font-size: 70px;
                 color: red;
@@ -84,29 +78,20 @@ $uid=$_SESSION['userid'];
 <!--    </script>-->
     <script>
         $(document).ready(function() {
-
-
             //when button is clicked
-
             $('#addTaskButton').click(function(){
                 addTask();
             });
             $('#addEventButton').click(function(){
                 addEvent();
             });
-
-
-
         });
-
         function addTask(){
             var uid = '<?php echo $uid ?>';
             var date = $('#taskdue').val();
             var detail = $('#taskTitle').val();
-
             $.post("function_caller.php",{ action: 'addtask',uid:uid, detail:detail, date:date},
                 function(result){
-
                     if(result == 1){
                         window.location.href="#";
                         $('#flag').html('<div class="warn success-flag" >Task Successfully Added</div>');
@@ -130,10 +115,8 @@ $uid=$_SESSION['userid'];
             var start = $('#eventstart').val();
             var end = $('#eventend').val();
             var detail = $('#eventTitle').val();
-
             $.post("function_caller.php",{ action: 'addevent', uid:uid, detail:detail, date:date, start:start, end:end},
                 function(result){
-
                     if(result == 1){
                         window.location.href="#";
                         $('#flag').html('<div class="warn success-flag" >Task Successfully Added</div>');
@@ -150,7 +133,6 @@ $uid=$_SESSION['userid'];
                     }
                 });
         }
-
         function blank(){
             window.location.href="#";
             $('#flag').html('<div class="warn error-flag">Error</div>');
@@ -162,7 +144,6 @@ $uid=$_SESSION['userid'];
     <script type="text/javascript">
 	
 	var originalNotifClasses;
-
 	function toggleNotif() {
     var elem = document.getElementById('popupnotif');
     var classes = elem.className;
@@ -175,7 +156,6 @@ $uid=$_SESSION['userid'];
 <script type="text/javascript">
 	
 	var originalNavClasses;
-
 	function toggleNav() {
     var elem = document.getElementById('menu');
     var classes = elem.className;
@@ -199,7 +179,6 @@ $uid=$_SESSION['userid'];
 $current_date = date('d/m/Y H:i:s');
 $sqlnotif = mysql_query("select * from task_data where due_date < '$current_date' and status != 'read' and status !='done'") or die(mysql_error());
 $num = mysql_num_rows($sqlnotif);
-
 $sqln = mysql_query("select * from task_data where status ='read'") or die(mysql_error());
 while($datan=mysql_fetch_array($sqln)){
     $output ='';
@@ -207,9 +186,7 @@ while($datan=mysql_fetch_array($sqln)){
                                     <td>'.$datan['detail'].'</td>
                                     <td class="action"><a href="#"<img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
                                 </tr>';
-    echo $output;
 }
-
 if(isset($_GET['nact'])){
     $notifact = $_GET['nact']; //Get action for notif
     $nid = $_GET['nid'];
@@ -241,14 +218,12 @@ if(isset($_GET['nact'])){
                 <td class="popup_desc">
         '.$data['detail'].'
 		</td>
-
 		<td>
 		<div class="popup_day">Unread</div>
 		</td>
 	</tr>';
                 echo $output; // echo the unreads
             }
-
             $sqln = mysql_query("select * from task_data where status ='read'") or die(mysql_error());
             while($datan=mysql_fetch_array($sqln)) {
                 $output ='';
@@ -260,7 +235,6 @@ if(isset($_GET['nact'])){
                 <td class="popup_desc">
         '.$datan['detail'].'
 		</td>
-
 		<td>
 		<div class="popup_day">Read</div>
 		</td>
@@ -394,7 +368,6 @@ if(isset($_GET['nact'])){
                                 </tr>';
                             echo $output;
                         }
-
                         ?>
 
 
@@ -429,7 +402,6 @@ if(isset($_GET['nact'])){
                                 </tr>';
                             echo $output;
                         }
-
                         ?>
 
 
@@ -487,3 +459,4 @@ if(isset($_GET['nact'])){
 //        }
 </script>
 </html>
+Status 
