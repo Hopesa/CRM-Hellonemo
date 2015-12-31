@@ -1,4 +1,6 @@
 <?php
+//Notes
+//Change to PDO, Tidy up,
 function createAccount($pUsername, $pPassword) { //User Account, Not that "Account"
     // First check we have data passed in.
     if (!empty($pUsername) && !empty($pPassword)) {
@@ -242,7 +244,7 @@ function editAccount($aid, $value, $type, $source, $status){
 
 }
 function addProject($aid, $project_name, $value, $type, $detail, $date, $creator){
-
+    $detail = mysql_real_escape_string($detail);
     $sql = "SELECT * FROM user_data WHERE username = '$creator'";
     $query = mysql_query($sql) or trigger_error("Query Failed: " . mysql_error());
     $userdata = mysql_fetch_assoc($query);
@@ -303,52 +305,52 @@ function sendQuotation($id ,$name ,$projectname, $description, $cost, $total, $e
     $current_date = date('d/m/Y == H:i:s');
     $body = '';
     $body.='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/xhtml" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
 <head>
 <meta name="viewport" content="width=device-width" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Quotations</title>
-<link href="http://mailgun.github.io/transactional-email-templates/styles.css" media="all" rel="stylesheet" type="text/css" />
+
 </head>
 
-<body itemscope itemtype="http://schema.org/EmailMessage">
+<body itemscope="" itemtype="http://schema.org/EmailMessage" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; -webkit-font-smoothing: antialiased; -webkit-text-size-adjust: none; width: 100% !important; height: 100%; line-height: 1.6; background-color: #f6f6f6; margin: 0; padding: 0;" bgcolor="#f6f6f6">
 
-<table class="body-wrap">
-	<tr>
-		<td></td>
-		<td class="container" width="600">
-			<div class="content">
-				<table class="main" width="100%" cellpadding="0" cellspacing="0">
-					<tr>
-						<td class="content-wrap aligncenter">
-							<table width="100%" cellpadding="0" cellspacing="0">
-								<tr>
-									<td class="content-block">
-										<h1 class="aligncenter">Quotation</h1>
+<table class="body-wrap" style="font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; background-color: #f6f6f6; margin: 0; padding: 0;" bgcolor="#f6f6f6">
+	<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+		<td style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0;" valign="top"></td>
+		<td class="container" width="600" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; display: block !important; max-width: 600px !important; clear: both !important; width: 100% !important; margin: 0 auto; padding: 0;" valign="top">
+			<div class="content" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; max-width: 600px; display: block; margin: 0 auto; padding: 10px;">
+				<table class="main" width="100%" cellpadding="0" cellspacing="0" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; border-radius: 3px; background-color: #fff; margin: 0; padding: 0; border: 1px solid #e9e9e9;" bgcolor="#fff">
+					<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+						<td class="content-wrap aligncenter" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 20px;" align="center" valign="top">
+							<table width="100%" cellpadding="0" cellspacing="0" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+								<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+									<td class="content-block" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+										<h1 class="aligncenter" style="font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 22px !important; color: #000; line-height: 1.2; font-weight: 600 !important; text-align: center; margin: 20px 0 5px; padding: 0;" align="center">Quotation</h1>
 									</td>
 								</tr>
-								<tr>
-									<td class="content-block">
-										<h2 class="aligncenter">Thanks for Inquiring Us.</h2>
+								<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+									<td class="content-block" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0 0 20px;" valign="top">
+										<h2 class="aligncenter" style="font-family: "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; box-sizing: border-box; font-size: 18px !important; color: #000; line-height: 1.2; font-weight: 600 !important; text-align: center; margin: 20px 0 5px; padding: 0;" align="center">Thanks for Inquiring Us.</h2>
 									</td>
 								</tr>
-								<tr>
-									<td class="content-block aligncenter">
-										<table class="invoice">
-											<tr>
-												<td>'.$name.'<br>'.$current_date.'</td>
+								<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+									<td class="content-block aligncenter" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
+										<table class="invoice" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; text-align: left; width: 100% !important; margin: 40px auto; padding: 0;">
+											<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+												<td style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">'.$name.'<br style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;" />'.$current_date.'</td>
 											</tr>
-											<tr>
-												<td>
-													<table class="invoice-items" cellpadding="0" cellspacing="0">
-														<tr>
-															<td>Service 1 : '.$projectname.'</td>
-															<td class="alignright">'.$cost.'</td>
+											<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+												<td style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 5px 0;" valign="top">
+													<table class="invoice-items" cellpadding="0" cellspacing="0" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; margin: 0; padding: 0;">
+														<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+															<td style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;" valign="top">Service 1 : '.$projectname.'</td>
+															<td class="alignright" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 1px; border-top-color: #eee; border-top-style: solid; margin: 0; padding: 5px 0;" align="right" valign="top">'.$cost.'</td>
 														</tr>
 
-														<tr class="total">
-															<td class="alignright" width="80%">Total</td>
-															<td class="alignright">'.$total.'</td>
+														<tr class="total" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+															<td class="alignright" width="80%" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top">Total</td>
+															<td class="alignright" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: right; border-top-width: 2px; border-top-color: #333; border-top-style: solid; border-bottom-color: #333; border-bottom-width: 2px; border-bottom-style: solid; font-weight: 700; margin: 0; padding: 5px 0;" align="right" valign="top">'.$total.'</td>
 														</tr>
 													</table>
 												</td>
@@ -356,13 +358,13 @@ function sendQuotation($id ,$name ,$projectname, $description, $cost, $total, $e
 										</table>
 									</td>
 								</tr>
-								<tr>
-									<td class="content-block aligncenter">
+								<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+									<td class="content-block aligncenter" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
 										Please Email Us for follow through
 									</td>
 								</tr>
-								<tr>
-									<td class="content-block aligncenter">
+								<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+									<td class="content-block aligncenter" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">
 										Hellonemo Digital Agency. Griya Shanta, Malang
 									</td>
 								</tr>
@@ -370,24 +372,26 @@ function sendQuotation($id ,$name ,$projectname, $description, $cost, $total, $e
 						</td>
 					</tr>
 				</table>
-				<div class="footer">
-					<table width="100%">
-						<tr>
-							<td class="aligncenter content-block">Questions? Email <a href="mailto:">hello@hellonemo.com</a></td>
+				<div class="footer" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; width: 100%; clear: both; color: #999; margin: 0; padding: 20px;">
+					<table width="100%" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+						<tr style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; margin: 0; padding: 0;">
+							<td class="aligncenter content-block" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; vertical-align: top; text-align: center; margin: 0; padding: 0 0 20px;" align="center" valign="top">Questions? Email <a href="mailto:" style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 12px; color: #999; text-decoration: underline; margin: 0; padding: 0;">hello@hellonemo.com</a></td>
 						</tr>
 					</table>
 				</div></div>
 		</td>
-		<td></td>
+		<td style="font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; box-sizing: border-box; font-size: 14px; vertical-align: top; margin: 0; padding: 0;" valign="top"></td>
 	</tr>
 </table>
 
 </body>
-</html>';
+</html>
+';
     $subject = 'Quotation for '.$projectname.'';
     $to = $email;
     $mail = new PHPMailer;
     $mail->isSMTP();
+    $mail->IsHTML(true);
     $mail->SMTPAuth = true;
     $mail->Host = 'smtp.gmail.com';
     $mail->Port = 587;
@@ -409,32 +413,97 @@ VALUES ('$id', 'Leads', 'Quotation Sent')";
     }
 }
 function sendInvoice($id ,$name ,$companyname , $email){
-    $body = '';
-    $total = '';
-    $output = '';
-    $sqla=mysql_query("select * from project_data where account_ID = $id and status = 'Done'");
-    while($dataa=mysql_fetch_array($sqla)) {
-        $output .= '<tr>
-                                                        <td>' . $dataa['Project_Name'] . '</td>
-                                                        <td>' . $dataa['Type'] . '</td>
-                                                        <td>' . $dataa['Value'] . '</td>
+    $output = '';$aid = $id;
+    $sql=mysql_query("select * from account_data WHERE Account_ID ='$aid' ");
+    $data=mysql_fetch_assoc($sql);
+    $sqlx=mysql_query("SELECT * FROM contact_data,user_data WHERE contact_data.contact_ID= '$data[Contact_ID]'
+and user_data.user_ID='$data[Account_Creator_ID]'");
+    $datax = mysql_fetch_assoc($sqlx);
+    $cdata = mysql_fetch_assoc(mysql_query("SELECT * FROM company_data WHERE company_ID='$data[Company_ID]'"));
+
+    $total = '';  //init total cost/value
+    $sqla=mysql_query("select * from project_data where Account_ID = $aid and status = 'done'");
+    $i = 1;
+    while($dataa=mysql_fetch_array($sqla)){
+        $output.='<tr>    <td class="service" style="text-align: left; vertical-align: top; padding: 20px;" align="left" valign="top">'.$i.'</td>
+                                                        <td class="service" style="text-align: left; vertical-align: top; padding: 20px;" align="left" valign="top">'.$dataa['Project_Name'].'</td>
+                                                        <td class="desc" style="text-align: left; vertical-align: top; padding: 20px;" align="left" valign="top">'.$dataa['Detail'].'</td>
+                                                        <td class="unit" style="text-align: right; font-size: 1.2em; padding: 20px;" align="right">'.$dataa['Type'].'</td>
+                                                        <td class="total" style="text-align: right; font-size: 1.2em; padding: 20px;" align="right">'.$dataa['Value'].' IDR</td>
                                                         </tr>
                                                         ';
         $total = $total + $dataa['Value'];
+        $i++;
     }
-    $body .= '<table class="table table-condensed detail-table">
-                <tbody>
-                <tr class="panel-heading">
-                    <th>Project Name</th>
-                    <th>Type</th>
-                    <th>Value</th>
+    $body = '';
+    $current_date = date('D d F Y');
+    $body.='
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Example 1</title>
 
-                </tr> '.$output.' <tr><td>Total</td><td></td><td>'.$total.'</td></tr></tbody></table>';
-    
+</head>
+<body style="position: relative; width: 21cm; height: 29.7cm; color: #001028; background-color: #FFFFFF; font-size: 12px; font-family: Arial; margin: 0 auto;" bgcolor="#FFFFFF">
+<header class="clearfix" style="margin-bottom: 30px; padding: 10px 0;">
+    <div id="logo" style="text-align: center; margin-bottom: 10px;" align="center">
+        <img src="http://hopesa.github.io/images/hellonemo-logo.png" style="width: 90px;" />
+    </div>
+    <h1 style="margin: 0 0 20px; border-top-style: solid; border-top-width: 1px; border-top-color: #5D6975; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: #5D6975; color: #5D6975; font-size: 2.4em; line-height: 1.4em; font-weight: normal; text-align: center; background-image: url("http://hopesa.github.io/images/dimension.png");" align="center">INVOICE</h1>
+    <div id="company" class="clearfix" style="float: right; text-align: right;" align="right">
+        <div style="white-space: nowrap;">'.$cdata['Company_Name'].'</div>
+        <div style="white-space: nowrap;">'.$datax['Telephone'].'</div>
+        <div style="white-space: nowrap;">'.$cdata['Email'].'</div>
+    </div>
+    <div id="project" style="float: left;">
+        <div style="white-space: nowrap;"><span style="color: #5D6975; text-align: right; width: 52px; margin-right: 10px; display: inline-block; font-size: 0.8em;">CLIENT</span>'.$datax['Name'].'</div>
+        <div style="white-space: nowrap;"><span style="color: #5D6975; text-align: right; width: 52px; margin-right: 10px; display: inline-block; font-size: 0.8em;">ADDRESS</span>'.$cdata['Address'].'</div>
+        <div style="white-space: nowrap;"><span style="color: #5D6975; text-align: right; width: 52px; margin-right: 10px; display: inline-block; font-size: 0.8em;">EMAIL</span>'.$datax['Email'].'</div>
+        <div style="white-space: nowrap;"><span style="color: #5D6975; text-align: right; width: 52px; margin-right: 10px; display: inline-block; font-size: 0.8em;">DATE</span>'.$current_date.'</div>
+    </div>
+</header>
+<main>
+    <table style="width: 100%; border-collapse: collapse; border-spacing: 0; margin-bottom: 20px;">
+        <thead>
+        <tr>
+
+            <th style="text-align: center; color: #5D6975; border-bottom-color: #C1CED9; border-bottom-width: 1px; border-bottom-style: solid; white-space: nowrap; font-weight: normal; padding: 5px 20px;" align="center">No</th>
+            <th class="service" style="text-align: left; color: #5D6975; border-bottom-color: #C1CED9; border-bottom-width: 1px; border-bottom-style: solid; white-space: nowrap; font-weight: normal; padding: 5px 20px;" align="left">SERVICE</th>
+            <th class="desc" style="text-align: left; color: #5D6975; border-bottom-color: #C1CED9; border-bottom-width: 1px; border-bottom-style: solid; white-space: nowrap; font-weight: normal; padding: 5px 20px;" align="left">DESCRIPTION</th>
+            <th style="text-align: center; color: #5D6975; border-bottom-color: #C1CED9; border-bottom-width: 1px; border-bottom-style: solid; white-space: nowrap; font-weight: normal; padding: 5px 20px;" align="center">TYPE</th>
+            <th style="text-align: center; color: #5D6975; border-bottom-color: #C1CED9; border-bottom-width: 1px; border-bottom-style: solid; white-space: nowrap; font-weight: normal; padding: 5px 20px;" align="center">COST</th>
+        </tr>
+        </thead>
+        <tbody>
+        '.$output.'
+        <tr>
+            <td colspan="4" class="grand total" style="text-align: right; font-size: 1.2em; border-top-width: 1px; border-top-color: #5D6975; border-top-style: solid; padding: 20px;" align="right">Total</td>
+            <td class="grand total" style="text-align: right; font-size: 1.2em; border-top-width: 1px; border-top-color: #5D6975; border-top-style: solid; padding: 20px;" align="right">'.$total.'</td>
+        </tr>
+        </tbody>
+    </table>
+    <div id="notices">
+        <div>NOTICE:</div>
+        <div class="notice" style="color: #5D6975; font-size: 12px;">Please Confirm to us after you made your payment</div>
+    </div>
+</main>
+<footer style="color: #5D6975; width: 100%; height: 30px; border-top-style: solid; border-top-width: 1px; border-top-color: #C1CED9; text-align: center; padding: 8px 0;">
+    Invoice was created on a computer and is valid without the signature and seal. &copy Hellonemo Digital Agency 2013-2016
+</footer>
+
+<style type="text/css">
+    .clearfix:after { content: "" !important; display: table !important; clear: both !important; }
+    body { position: relative !important; width: 21cm !important; height: 29.7cm !important; margin: 0 auto !important; color: #001028 !important; background: #FFFFFF !important; font-size: 12px !important; font-family: Arial !important; }
+</style>
+</body>
+</html>';
+
     $subject = 'Invoice for '.$companyname.'';
     $to = $email;
     $mail = new PHPMailer;
     $mail->isSMTP();
+    $mail->IsHTML(true);
     $mail->SMTPAuth = true;
     $mail->Host = 'smtp.gmail.com';
     $mail->Port = 587;

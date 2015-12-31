@@ -66,9 +66,29 @@ if (isset($_GET['cid'])){
     <link rel="stylesheet" href="css/contact.css">
     <link rel="stylesheet prefetch" href="http://fian.my.id/marka/static/marka/css/marka.css">
     <link rel="stylesheet" href="css/filter.css">
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<!-- favicon -->
+	<link rel="apple-touch-icon" sizes="57x57" href="images/favicon/apple-icon-57x57.png">
+	<link rel="apple-touch-icon" sizes="60x60" href="images/favicon/apple-icon-60x60.png">
+	<link rel="apple-touch-icon" sizes="72x72" href="images/favicon/apple-icon-72x72.png">
+	<link rel="apple-touch-icon" sizes="76x76" href="images/favicon/apple-icon-76x76.png">
+	<link rel="apple-touch-icon" sizes="114x114" href="images/favicon/apple-icon-114x114.png">
+	<link rel="apple-touch-icon" sizes="120x120" href="images/favicon/apple-icon-120x120.png">
+	<link rel="apple-touch-icon" sizes="144x144" href="images/favicon/apple-icon-144x144.png">
+	<link rel="apple-touch-icon" sizes="152x152" href="images/favicon/apple-icon-152x152.png">
+	<link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-icon-180x180.png">
+	<link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+	<link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+	<link rel="icon" type="image/png" sizes="96x96" href="images/favicon/favicon-96x96.png">
+	<link rel="icon" type="image/png" sizes="16x16" href="images/favicon/favicon-16x16.png">
+	<link rel="manifest" href="images/favicon/manifest.json">
+	<meta name="msapplication-TileColor" content="#ffffff">
+	<meta name="msapplication-TileImage" content="images/favicon/ms-icon-144x144.png">
+	<meta name="theme-color" content="#ffffff">
+	<!-- end of favicon -->
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
     <script src="http://fian.my.id/marka/static/marka/js/marka.js"></script>
     <script src="js/filter.js"></script>
+	<script type="text/javascript" src="js/modernizr.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script type="text/javascript">
 
@@ -192,6 +212,19 @@ if (isset($_GET['cid'])){
         }
 
     </script>
+	<script type="text/javascript">
+	
+	var originalNavClasses;
+
+	function toggleNav() {
+    var elem = document.getElementById('menu');
+    var classes = elem.className;
+    if (originalNavClasses === undefined) {
+        originalNavClasses = classes;
+    }
+    elem.className = /expanded/.test(classes) ? originalNavClasses : originalNavClasses + ' expanded';
+}
+</script>
     <style>
         body{
             display: block;
@@ -204,18 +237,19 @@ if (isset($_GET['cid'])){
 
 <div class="topbar">
     <img class="logo" src="images/hellonemo-logo-small.png">
-    <div class="search"><form>
-            <input type="text" placeholder="search">
-        </form>
-        <img src="images/search.png">
-    </div>
-
+	<a href="#footer_nav" onclick="toggleNav(); return false;"><img class="menu_button" src="images/menu.png"></a>
     <div class="notif">
         <img src="images/icon1.png">
         <img src="images/icon2.png">
         <img src="images/icon3.png">
         <img src="images/gears.png">
     </div>
+    <div class="search"><form>
+            <input type="text" placeholder="search">
+        </form>
+        <img src="images/search.png">
+    </div>
+
 
 </div>
 <div class="sidebar">
@@ -224,61 +258,82 @@ if (isset($_GET['cid'])){
         <center><button>Logout</button></center>
     </div>
     <ul class="sidebar-menu">
-        <li class="active">
-            <a href="">
+        <li>
+            <a href="dashboard.php">
                 <img src="images/Forma-1.png"> <span>Dashboard</span>
             </a>
         </li>
-        <li>
-            <a href="">
+        <li class="active">
+            <a href="contact.php">
                 <img src="images/Forma-2.png"> <span>Contacts</span>
             </a>
         </li>
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Leads</span>
+            <a href="leads.php">
+                <img src="images/Forma-3.png"> <span>Leads</span>
             </a>
         </li>
 
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Prospects</span>
+            <a href="prospect.php">
+                <img src="images/Forma-4.png"> <span>Prospects</span>
             </a>
         </li>
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Accounts</span>
+            <a href="account.php">
+                <img src="images/Forma-5.png"> <span>Accounts</span>
             </a>
         </li>
         <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Projects</span>
-            </a>
-        </li>
-        <li>
-            <a href="">
-                <img src="images/Forma-2.png"> <span>Reports</span>
+            <a href="project.php">
+                <img src="images/Forma-6.png"> <span>Projects</span>
             </a>
         </li>
     </ul>
 </div>
-<div class="content col-md-12">
+	<ul class="mobile-menu" id="menu">
+		<div class="search2">
+            <form>
+                <input type="text" placeholder="search">
+				<img src="images/search.png">
+            </form>
+        </div>
+		<li>
+            <a href="dashboard.php">
+                <img src="images/Forma-1.png"> <span>Dashboard</span>
+            </a>
+        </li>
+        <li class="active">
+            <a href="contact.php">
+                <img src="images/Forma-2.png"> <span>Contacts</span>
+            </a>
+        </li>
+        <li>
+            <a href="leads.php">
+                <img src="images/Forma-3.png"> <span>Leads</span>
+            </a>
+        </li>
+
+        <li>
+            <a href="prospect.php">
+                <img src="images/Forma-4.png"> <span>Prospects</span>
+            </a>
+        </li>
+        <li>
+            <a href="account.php">
+                <img src="images/Forma-5.png"> <span>Accounts</span>
+            </a>
+        </li>
+        <li>
+            <a href="project.php">
+                <img src="images/Forma-6.png"> <span>Projects</span>
+            </a>
+        </li>
+        </ul>
+<div class="content">
 <div id="flag"></div>
     <div class="contact">
         <h1>Contact</h1>
-        <div class="filter">
-            <div class="button-group">
-                <i id="icon"></i>
-                <a id="input" href="">Filter</a>
-                <ul id="dropdown-menu">
-                    <li><a href="#">Action</a></li>
-                    <li><a href="#">Another action</a></li>
-                    <li><a href="#">Something else </a></li>
-                    <li><a href="#">Account Settings</a></li>
-                    <li><a href="#">Help and Feedback</a></li>
-                </ul>
-            </div>
-        </div>
         <div class="top"><a class="button" href="#popup1">New Account</a>
         </div>
         <div class="panel">
@@ -288,10 +343,10 @@ if (isset($_GET['cid'])){
                     <tr class="panel-heading">
                         <th>Name</th>
                         <th>Company</th>
-                        <th>Telephone</th>
-                        <th>Email</th>
+                        <th class="hide2">Telephone</th>
+                        <th class="hide1">Email</th>
                         <th>Status</th>
-                        <th>Action</th>
+                        <th class="hide2">Action</th>
                     </tr>
                     <?php
                     $sql=mysql_query('select * from contact_data');
@@ -302,10 +357,10 @@ if (isset($_GET['cid'])){
                         $output.='<tr data-href="contact-detail.php?id='.$data['Contact_ID'].'">
                                     <td>'.$data['Name'].'</td>
                                     <td>'.$cdata['Company_Name'].'</td>
-                                    <td>'.$data['Telephone'].'</td>
-                                    <td>'.$data['Email'].'</td>
+                                    <td class="hide2">'.$data['Telephone'].'</td>
+                                    <td class="hide1">'.$data['Email'].'</td>
                                     <td>'.$data['Status'].'</td>
-                                    <td class="action"><a href=contact.php?cid='.$data['Contact_ID'].'#editContact><img src="images/Edit-Icon.png"></a><a href=contact.php?cid='.$data['Contact_ID'].'#confirmdel><img src="images/Delete-Icon.png"</a></td>
+                                    <td class="hide2 action"><a href=contact.php?cid='.$data['Contact_ID'].'#editContact><img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
                                 </tr>';
                         echo $output;
                     }
@@ -320,13 +375,6 @@ if (isset($_GET['cid'])){
             <div>
                 <a class="square red-link"><img src="images/icon-prospect.png"><br>Import Prospects</a>
                 <a class="square green-link"><img src="images/icon-trash.png"><br>Mass Delete Prospect</a>
-            </div>
-        </div>
-        <div class="reports col-md-6 contact-box">
-            <h1>Reports</h1>
-            <div>
-                <a class="square red-link" style="padding-top:20px;"><img src="images/icon-message.png"><br>Mass Email Contact</a>
-                <a class="square green-link" style="padding-top:20px;"><img src="images/message-check.png"><br>Email Status</a>
             </div>
         </div>
     </div>
@@ -413,18 +461,6 @@ echo $output;
         </div>
     </div>
 </div>
-    <div id="confirmdel" class="overlay">
-        <div class="popup-small">
-            <div class="red-header">
-                <h2><span>Confirmation</span></h2>
-                <a class="close" href="#">&times;</a>
-            </div>
-            <div class="content-pop">
-                <h3 style="margin-bottom:22px">Are you sure want to delete this contact??<center><br><a  class="button" href=delete.php?action=contact&id=<?php echo $cid ?> style="margin-left:40px">Yes</a>
-                        <a href="#" class="button">Cancel</a><br></center></h3>
-            </div>
-        </div>
-    </div>
 <script>
     jQuery(document).ready(function($) {
         $(".clickable-row").click(function() {

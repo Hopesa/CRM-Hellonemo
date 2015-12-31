@@ -21,5 +21,7 @@ require_once('functions.php');
 // default the error variable to empty.
 $_SESSION['error'] = "";
 // declare $Output so we do not have to do this on each page.
+$sOutput="";
 $output="";
+
 ?>

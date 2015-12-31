@@ -7,11 +7,10 @@
 }
 .task{
     display: block;
-	float: left;
-    position: relative;
+    position: absolute;
     margin-left: 185px;
-    margin-top: 73px;
-    width: 33%;
+    margin-top: 45px;
+    width: 461px;
     height: auto;
 }
 .task h1{
@@ -114,12 +113,10 @@
     padding: 0;
 }
 .event{
-        position: relative;
+    position: absolute;
     float: left;
     height: auto;
-    margin-left: 27;
-    width: 46%;
-    margin-top: 73px;
+    margin-left: 670px;
 }
 .event h1{
     margin-bottom: 15px;
@@ -150,6 +147,7 @@
 .event-table{
     color: #a7a6a6;
     font: 400 11px Lato;
+    width:633px;
 }
 .event-table > tbody > tr > .subject {
     width: 70%;
@@ -194,38 +192,4 @@
     position: relative;
 }
 
-.panel-body > table > tbody > tr > td{
-	background-color:#FFF;
-}
-.panel {background-color:none !important;}
-.d-button{
-	    position: relative;
-    float: right;
-}
-
-@media only screen and (max-width: 1000px) {
-    .event{width: 39%;}
-}
-@media only screen and (max-width: 768px) {
-    .task{
-		width: 97%;
-		margin-left: 17px ;
-	}
-	.event{
-		width: 97%;
-		margin-left: 17px ;
-		margin-top:0px;
-	}
-}
-@media only screen and (max-width: 320px) {
-	.task{
-		width: 100%;
-		margin-left: 5px !important;
-	}
-	
-	.event{
-		width: 100%;
-		margin-left: 5px !important;
-		margin-top:0px;
-	}
-}
+    

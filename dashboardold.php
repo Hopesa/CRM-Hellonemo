@@ -161,23 +161,10 @@ $uid=$_SESSION['userid'];
     </script>
     <script type="text/javascript">
 	
-	var originalNotifClasses;
+	var originalNavClasses;
 
 	function toggleNotif() {
     var elem = document.getElementById('popupnotif');
-    var classes = elem.className;
-    if (originalNotifClasses === undefined) {
-        originalNotifClasses = classes;
-    }
-    elem.className = /expanded/.test(classes) ? originalNotifClasses : originalNotifClasses + ' expanded';
-}
-</script>
-<script type="text/javascript">
-	
-	var originalNavClasses;
-
-	function toggleNav() {
-    var elem = document.getElementById('menu');
     var classes = elem.className;
     if (originalNavClasses === undefined) {
         originalNavClasses = classes;
@@ -194,90 +181,85 @@ $uid=$_SESSION['userid'];
     </style>
 </head>
 <body>
-<?php
-//notification
-$current_date = date('d/m/Y H:i:s');
-$sqlnotif = mysql_query("select * from task_data where due_date < '$current_date' and status != 'read' and status !='done'") or die(mysql_error());
-$num = mysql_num_rows($sqlnotif);
 
-$sqln = mysql_query("select * from task_data where status ='read'") or die(mysql_error());
-while($datan=mysql_fetch_array($sqln)){
-    $output ='';
-    $output.='<tr>
-                                    <td>'.$datan['detail'].'</td>
-                                    <td class="action"><a href="#"<img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
-                                </tr>';
-    echo $output;
-}
-
-if(isset($_GET['nact'])){
-    $notifact = $_GET['nact']; //Get action for notif
-    $nid = $_GET['nid'];
-    $sql = mysql_query("update task_data where id = $nid SET ") or die(mysql_error());
-}
-?>
 <div class="topbar">
     <img class="logo" src="images/hellonemo-logo-small.png">
-	<a href="#footer_nav" onclick="toggleNav(); return false;"><img class="menu_button" src="images/menu.png"></a>
-	<div class="notif">
-            <img src="images/icon1.png">
-            <img src="images/icon2.png">
-            <a href="#footer_nav" onclick="toggleNotif(); return false;"><?php if($num > 0) {echo'<img src="images/icon3-red.png">';} else {echo '<img src="images/icon3.png">';} ?></a></a>
-			<div class="container_popup">
-<div class="arrow_up"></div>
-<div class="popupnotif" id="popupnotif">
-<div class="popup_count">You have <?php echo $num ?> unread notifications</div>
-<table border-spacing=0>
-
-
-            <?php
-            while($data=mysql_fetch_array($sqlnotif)){
-                $output ='';
-                $output.='
-<tr>
-		<td class="popup_img">
-		<img src="images/notif/notif1.png" />
-		</td>
-                <td class="popup_desc">
-        '.$data['detail'].'
-		</td>
-
-		<td>
-		<div class="popup_day">Unread</div>
-		</td>
-	</tr>';
-                echo $output; // echo the unreads
-            }
-
-            $sqln = mysql_query("select * from task_data where status ='read'") or die(mysql_error());
-            while($datan=mysql_fetch_array($sqln)) {
-                $output ='';
-                $output.='
-<tr>
-		<td class="popup_img">
-		<img src="images/notif/notif1.png" />
-		</td>
-                <td class="popup_desc">
-        '.$datan['detail'].'
-		</td>
-
-		<td>
-		<div class="popup_day">Read</div>
-		</td>
-	</tr>';
-                echo $output; // echo the unreads
-            }
-            ?>
-</table>
-</div>
-</div>
-            <img src="images/gears.png">
-        </div>
     <div class="search"><form>
             <input type="text" placeholder="search">
         </form>
         <img src="images/search.png">
     </div>
+
+    
+        <div class="notif">
+            <img src="images/icon1.png">
+            <img src="images/icon2.png">
+            <a href="#footer_nav" onclick="toggleNotif(); return false;"><img src="images/icon3.png"></a>
+			<div class="container-popup">
+<div class="arrow-up"></div>
+<div class="popup-notif" id="popupnotif">
+<div class="popup-count">You have 9 notifications</div>
+<table border-spacing=0>
+	<tr>
+		<td class="popup-img">
+		<img src="images/notif/notif1.png" />
+		</td>
+		<td class="popup-desc"> 
+		Marketing meeting will be started tommorow at 9.00 AM
+		</td>
+		<td>
+		<div class="popup-day">Sen</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="popup-img">
+		<img src="images/notif/notif1.png" />
+		</td>
+		<td class="popup-desc"> 
+		Marketing meeting will be started tommorow at 9.00 AM
+		</td>
+		<td>
+		<div class="popup-day">Sen</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="popup-img">
+		<img src="images/notif/notif1.png" />
+		</td>
+		<td class="popup-desc"> 
+		Marketing meeting will be started tommorow at 9.00 AM
+		</td>
+		<td>
+		<div class="popup-day">Sen</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="popup-img">
+		<img src="images/notif/notif1.png" />
+		</td>
+		<td class="popup-desc"> 
+		Marketing meeting will be started tommorow at 9.00 AM
+		</td>
+		<td>
+		<div class="popup-day">Sen</div>
+		</td>
+	</tr>
+	<tr>
+		<td class="popup-img">
+		<img src="images/notif/notif1.png" />
+		</td>
+		<td class="popup-desc"> 
+		Marketing meeting will be started tommorow at 9.00 AM
+		</td>
+		<td>
+		<div class="popup-day">Sen</div>
+		</td>
+	</tr>
+</table>
+</div>
+</div>
+            <img src="images/gears.png">
+        </div>
 
 </div>
 <div class="sidebar">
@@ -286,93 +268,49 @@ if(isset($_GET['nact'])){
         <center><button>Logout</button></center>
     </div>
     <ul class="sidebar-menu">
-        <li>
+        <li class="active">
             <a href="">
                 <img src="images/Forma-1.png"> <span>Dashboard</span>
             </a>
         </li>
-        <li class="active">
-            <a href="contact.php">
+        <li>
+            <a href="">
                 <img src="images/Forma-2.png"> <span>Contacts</span>
             </a>
         </li>
         <li>
-            <a href="leads.php">
-                <img src="images/Forma-3.png"> <span>Leads</span>
+            <a href="">
+                <img src="images/Forma-2.png"> <span>Contacts</span>
             </a>
         </li>
 
         <li>
-            <a href="prospect.php">
-                <img src="images/Forma-4.png"> <span>Prospects</span>
+            <a href="">
+                <img src="images/Forma-2.png"> <span>Contacts</span>
             </a>
         </li>
         <li>
-            <a href="account.php">
-                <img src="images/Forma-5.png"> <span>Accounts</span>
+            <a href="">
+                <img src="images/Forma-2.png"> <span>Contacts</span>
             </a>
         </li>
         <li>
-            <a href="project.php">
-                <img src="images/Forma-6.png"> <span>Projects</span>
+            <a href="">
+                <img src="images/Forma-2.png"> <span>Contacts</span>
             </a>
         </li>
         <li>
-            <a href="#">
-                <img src="images/Forma-7.png"> <span>Reports</span>
+            <a href="">
+                <img src="images/Forma-2.png"> <span>Contacts</span>
             </a>
         </li>
     </ul>
 </div>
-<ul class="mobile-menu" id="menu">
-		<div class="search2">
-            <form>
-                <input type="text" placeholder="search">
-				<img src="images/search.png">
-            </form>
-        </div>
-		<li>
-            <a href="">
-                <img src="images/Forma-1.png"> <span>Dashboard</span>
-            </a>
-        </li>
-        <li class="active">
-            <a href="contact.php">
-                <img src="images/Forma-2.png"> <span>Contacts</span>
-            </a>
-        </li>
-        <li>
-            <a href="leads.php">
-                <img src="images/Forma-3.png"> <span>Leads</span>
-            </a>
-        </li>
-
-        <li>
-            <a href="prospect.php">
-                <img src="images/Forma-4.png"> <span>Prospects</span>
-            </a>
-        </li>
-        <li>
-            <a href="account.php">
-                <img src="images/Forma-5.png"> <span>Accounts</span>
-            </a>
-        </li>
-        <li>
-            <a href="project.php">
-                <img src="images/Forma-6.png"> <span>Projects</span>
-            </a>
-        </li>
-        <li>
-            <a href="#">
-                <img src="images/Forma-7.png"> <span>Reports</span>
-            </a>
-        </li>
-        </ul>
 <div class="main">
     <div id="flag"></div>
     <div class="task">
         <h1>Recent Task
-            <div class="d-button"><a class="button" href="#addTask">New Task</a></div></h1>
+            <a class="button" href="#addTask">New Task</a></h1>
         <div class="panel">
             <div class="panel-body no-padding">
                 <table class="table table-condensed task-table">
@@ -405,8 +343,9 @@ if(isset($_GET['nact'])){
     </div>
     <div class="event">
         <div>
-            <h1>Schedule Events<div class="d-button"><a class="button" href="#addEvent">New Event</a></div></h1>
+            <h1>Schedule Events<a class="button" href="#addEvent">New Event</a><button> Switch to Meetings</button></h1>
         </div>
+        <div class="calendar"></div>
         <div class="panel">
             <div class="panel-body no-padding">
                 <table class="table table-condensed event-table">
@@ -476,14 +415,51 @@ if(isset($_GET['nact'])){
     </div>
 </div>
 </body>
+<?php
+$current_date = date('d/m/Y H:i:s');
+echo '<div id="notifx">'.$current_date.'<div>';
+    $sql = mysql_query("select * from task_data where due_date < '$current_date' or status = 'unread'") or die(mysql_error());
+    $num = mysql_num_rows($sql);
+    if ($num > 1){
+        echo "<p> $num </p>";
+    }
+    while($data=mysql_fetch_array($sql)){
+                            $output ='';
+                            $output.='<tr>
+                                    <td>'.$data['detail'].'</td>
+                                    <td class="action"><a href="#"<img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                </tr>';
+                            echo $output; // echo the unreads
+                        }
 
+    $sql = mysql_query("select * from task_data where status ='read'") or die(mysql_error());
+    $num = mysql_num_rows($sql);
+    if ($num > 1){
+        echo "<p> $num </p>";
+    }
+    while($data=mysql_fetch_array($sql)){
+                            $output ='';
+                            $output.='<tr>
+                                    <td>'.$data['detail'].'</td>
+                                    <td class="action"><a href="#"<img src="images/Edit-Icon.png"></a><img src="images/Delete-Icon.png"></td>
+                                </tr>';
+                            echo $output; // echo 'read' but not done, label it as read
+                        }
+
+if(isset($_GET['nact'])){
+$notifact = $_GET['nact']; //Get action for notif
+    $nid = $_GET['nid'];
+     $sql = mysql_query("update task_data where id = $nid SET ") or die(mysql_error());
+}
+?>
 
 <script>
 //Notification/ Notification have 4 status type (Pending, Unread, Read, Done)
-//var myVar = setInterval(reload, 1000);  //refresh notification every 1s
-//
-//function reload(){
-//            var container = document.getElementById("notifx").contentWindow.location.reload(true);
-//        }
+var myVar = setInterval(reload, 1000);  //refresh notification every 1s
+    
+function reload(){
+            var container = document.getElementById("notifx")..contentWindow.location.reload(true);
+        }
+    
 </script>
 </html>
